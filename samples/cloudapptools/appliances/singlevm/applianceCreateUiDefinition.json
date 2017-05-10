@@ -1,0 +1,393 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "vmName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Name of the virtual machine (ver. N)",
+        "toolTip": "Name of the virtual machine must be unique.",
+        "constraints": {"required": true }
+      },
+      {
+        "name": "vmSize",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "Standard_D1_v2",
+        "label": "Name of the virtual machine",
+        "toolTip": "Size for the Virtual Machine. Details: https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-sizes?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#standard-tier-d-series",
+        "constraints": {"required": false }
+      }, 
+      {
+        "name": "imagePublisher",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "MicrosoftWindowsServer",
+        "label": "Imaged Publisher",
+        "toolTip": "OS Image Publisher. https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-cli-ps-findimage/",
+        "constraints": {
+          "required": true }
+      }, 
+      {
+        "name": "imageOffer",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "WindowsServer",
+        "label": "Image Offer",
+        "toolTip": "OS Image Offer. https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-cli-ps-findimage/",
+        "constraints": {"required": false }
+      }, 
+      {
+        "name": "sku",
+        "type": "Microsoft.Common.DropDown",
+        "label": "sku",
+        "defaultValue": "2016-Datacenter",
+        "toolTip": "Storage performance, Standard_LRS for standard skus and Premium_LRS for premium skus",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "2012-R2-Datacenter",
+              "value": "2012-R2-Datacenter"
+            },
+            {
+              "label": "2016-Datacenter",
+              "value": "2016-Datacenter"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "userImageStorageAccountName",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "",
+        "label": "Name of storage account",
+        "toolTip": "Specify an existing storage account where the VM image(s) will be created, example: mystorage",
+        "constraints": {
+          "required": true }
+      }, 
+      {
+        "name": "StorageAccountType",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Storage Account Type",
+        "defaultValue": "Standard_LRS",
+        "toolTip": "Storage performance, Standard_LRS for standard skus and Premium_LRS for premium skus",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "Standard_LRS",
+              "value": "Standard_LRS"
+            },
+            {
+              "label": "Premium_LRS",
+              "value": "Premium_LRS"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "DiskConfig",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Type of VM",
+        "defaultValue": "Win",
+        "toolTip": "Choose Windows or IIS VM",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "Win",
+              "value": "Win"
+            },
+            {
+              "label": "IIS",
+              "value": "IIS"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "DiskCount",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Disk Count",
+        "defaultValue": "1",
+        "toolTip": "Number of Data Disks to be attached to VM.",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "0",
+              "value": "0"
+            },
+            {
+              "label": "1",
+              "value": "1"
+            },
+            {
+              "label": "2",
+              "value": "2"
+            },
+            {
+              "label": "3",
+              "value": "3"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            },
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "10",
+              "value": "10"
+            },
+            {
+              "label": "11",
+              "value": "11"
+            },
+            {
+              "label": "12",
+              "value": "12"
+            },            
+            {
+              "label": "13",
+              "value": "13"
+            },
+            {
+              "label": "14",
+              "value": "14"
+            },
+            {
+              "label": "15",
+              "value": "15"
+            },
+            {
+              "label": "16",
+              "value": "16"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "virtualNetwork",
+        "type": "Microsoft.Common.TextBox",
+        "label": "virtual Network",
+        "toolTip": "Name for the VirtualNetwork",
+        "constraints": {"required": false }
+      },
+      {
+        "name": "vnetResourceGroup",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "ERNetwork",
+        "label": "ER Network Resource Group",
+        "toolTip": "Name for the Resource Group that contains VirtualNetwork. ",
+        "constraints": {"required": false }
+      },
+      {
+        "name": "subnetName",
+        "type": "Microsoft.Common.TextBox",
+        "defaultValue": "Subnet-1",
+        "label": "Subnet Name",
+        "toolTip": "Name for the subnet",
+        "constraints": {"required": false }
+      }
+    ],
+    "steps": [
+      {
+        "name": "envInfo",
+        "label": "Environment Configuration",
+        "subLabel": {
+          "preValidation": "Provide Environment Configuration",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Environment information",
+        "elements": [
+          {
+            "name": "env",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Environment",
+            "defaultValue": "dev",
+            "toolTip": "environment tag for the Virtual Machine.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "dev",
+                  "value": "dev"
+                },
+                {
+                  "label": "test",
+                  "value": "test"
+                },
+                {
+                  "label": "prod",
+                  "value": "prod"
+                }
+              ]
+            },
+            "visible": true
+          }, 
+          {
+            "name": "domainName",
+            "type": "Microsoft.Common.TextBox",
+            "defaultValue": "redmond.corp.microsoft.com",
+            "label": "domainName",
+            "toolTip": "The name of the domain.  Important! You will need to update VNETRESOURCEGROUP and OUPATH parameters as well if you change from domain1.com",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "ouPath",
+            "type": "Microsoft.Common.TextBox",
+            "defaultValue": "OU=CloudMSVMs,OU=ITManaged,OU=ITServices,DC=redmond,DC=corp,DC=microsoft,DC=com",
+            "label": "domainName",
+            "toolTip": "Path of the OU",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "localAdminUserName",
+            "type": "Microsoft.Common.TextBox",
+            "defaultValue": "ITSVC0",
+            "label": "Local Admin Username",
+            "toolTip": "Local admin Username for the Virtual Machine.",
+            "constraints": {"required": false }
+          }, 
+          {
+            "name": "localAdminUserPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Local Admin Password",
+              "confirmPassword": "Confirm Local Admin password"
+            },
+            "toolTip": "Admin password for the virtual machines",
+            "constraints": {
+              "required": false,
+              "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+              "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          },
+          {
+            "name": "domainJoinUserName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Domain Join Username",
+            "defaultValue": "domain\\serviceaccount",
+            "toolTip": "Account for domain joining, ex. domain\\serviceaccount",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "domainJoinPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Domain Join User Password",
+              "confirmPassword": "Confirm Domain Join User password"
+            },
+            "toolTip": "Domain join password for the virtual machines",
+            "options": {
+              "hideConfirmation": false
+            }
+          },       
+          {
+            "name": "localAdmins",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Local Administrators",
+            "defaultValue": "domain\\serviceaccount",
+            "toolTip": "Accounts added to the Local Administrators group ex. domain\\serviceaccount,domain\\serviceaccount2",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "CiOwner",
+            "type": "Microsoft.Common.TextBox",
+            "label": "CI Owner",
+            "toolTip": "CiOwner tag for the Virtual Machine. Example: youralias",
+            "constraints": {"required": false }
+          },   
+          {
+            "name": "CiAnalystGroup",
+            "type": "Microsoft.Common.TextBox",
+            "label": "CI Analyst Group",
+            "toolTip": "CiAnalystGroup tag for the Virtual Machine. Please contact your Cloud Lead if you don't know this value.  Format: Config Analyst: Org1 - Org2 -Org3 - Org4",
+            "constraints": {"required": false }
+          }, 
+          {
+            "name": "appID",
+            "type": "Microsoft.Common.TextBox",
+            "label": "appID",
+            "toolTip": "appID tag for the Virtual Machine.",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "orgID",
+            "type": "Microsoft.Common.TextBox",
+            "label": "orgID",
+            "toolTip": "orgID tag for the Virtual Machine.",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "PullServerRegistrationKey",
+            "type": "Microsoft.Common.TextBox",
+            "defaultValue": "***REMOVED***",
+            "label": "Pull Server Registration Key",
+            "toolTip": "Key to to Pull server",
+            "constraints": {"required": false }
+          },
+          {
+            "name": "PullServerRegistrationURI",
+            "type": "Microsoft.Common.TextBox",
+            "defaultValue": "***REMOVED***",
+            "label": "Pull Server URI",
+            "toolTip": "URI to to Pull server",
+            "constraints": {"required": false }
+          }
+        ]
+      }
+  ],
+
+    "outputs": {
+      "location": "[location()]",
+      "vmName": "[basics('vmName')]",
+      "vmSize": "[basics('vmSize')]",
+      "imagePublisher": "[basics('imagePublisher')]",
+      "imageOffer": "[basics('imageOffer')]",
+      "sku": "[basics('sku')]",
+      "userImageStorageAccountName": "[basics('userImageStorageAccountName')]",
+      "StorageAccountType": "[basics('StorageAccountType')]",
+      "DiskConfig": "[basics('DiskConfig')]",
+      "DiskCount": "[basics('DiskCount')]",
+      "DiskSize": "[int('200')]",
+      "virtualNetwork": "[basics('virtualNetwork')]",
+      "vnetResourceGroup": "[basics('vnetResourceGroup')]",
+      "subnetName": "[basics('subnetName')]",
+      "env": "[steps('envInfo').env]",
+      "domainName": "[steps('envInfo').domainName]",
+      "ouPath": "[steps('envInfo').ouPath]",
+      "localAdminUserName": "[steps('envInfo').localAdminUserName]",
+      "localAdminPassword": "[steps('envInfo').localAdminUserPassword]",
+      "domainJoinUserName": "[steps('envInfo').domainJoinUserName]",
+      "domainJoinPassword": "[steps('envInfo').domainJoinPassword]",
+      "localAdmins": "[steps('envInfo').localAdmins]",
+      "CiOwner": "[steps('envInfo').CiOwner]",
+      "CiAnalystGroup": "[steps('envInfo').CiAnalystGroup]",
+      "appID": "[steps('envInfo').appID]",
+      "orgID": "[steps('envInfo').orgID]",
+      "PullServerRegistrationKey": "[steps('envInfo').PullServerRegistrationKey]",
+      "PullServerRegistrationURI": "[steps('envInfo').PullServerRegistrationURI]"
+    }
+  }
+}
