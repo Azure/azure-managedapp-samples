@@ -12,7 +12,7 @@ Step 5: Create ManagedApp Definition
 2. For the demo use roleDefinitionId as 8e3af657-a8ff-443c-a75c-2fe8c4bcb635 (This is built in role definition for the "Owner")
 3. Go to Azure Portal (portal.azure.com) -> from the top right corner select "Cloud Shell" and run following commmand:
 
-az managedapp definition create --display-name HelloManagedAppDef --description "A simple managedApp definition consist of a storage account" -a "<principal id>:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" -l westcentralus --lock-level ReadOnly -g appdefRG -n helloManagedAppDef --package-file-uri https://nirajgappliancepackages.blob.core.windows.net/blockchain/managed-blockchain-1.0.0k_fromBoris.zip
+az managedapp definition create --display-name HelloManagedAppDef --description "A simple managedApp definition consist of a storage account" -a "<principal id>:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" -l westcentralus --lock-level ReadOnly -g appdefRG -n helloManagedAppDef --package-file-uri https://<storageaccountname>.blob.core.windows.net/<containername>/managed_singlestorageaccount.zip
 
 Step 6: Create ManagedApp
 Create managed app using managed app definition created above
