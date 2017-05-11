@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "userImageStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The Storage Account where the VM image(s) will be created"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The Storage Account where the VM image(s) will be created"
+      }
+    }
+  },
+  "variables": {
+
+    
+    "scriptsURL": "[uri(deployment().properties.templateLink.uri,'../scripts/')]",
+    "nestedURL": "[uri(deployment().properties.templateLink.uri,'../nested/')]",
+
+    "deployWinZip": "Deploy-WinServer.ps1.zip",
+    "configurationFunction": "Deploy-WinServer.ps1\\DeployWinServer",
+    "modulesUrl": "[concat(variables('scriptsURL'),variables('deployWinZip'))]"
+  },
+  "resources": [
+     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[parameters('userImageStorageAccountName')]",
+      "apiVersion": "2016-01-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "[parameters('userImageStorageAccountName')]"
+      },
+      "kind": "Storage",
+      "sku": {
+        "name": "[parameters('StorageAccountType')]"
+      },
+      "properties": {}
+    }
+    ]
+}
+
