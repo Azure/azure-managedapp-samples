@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specify the name of the storage account"
+            }
+        },
+        "storageAccountType": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "managedResourceGroup": "[concat(resourceGroup().id,uniquestring(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Solutions/appliances",
+            "apiVersion": "2016-09-01-preview",
+            "name": "[parameters('storageAccountName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "serviceCatalog",
+            "properties": {
+                "applianceDefinitionId": "/subscriptions/{yourSubscriptionId}/resourceGroups/{yourRgName}/providers/Microsoft.Solutions/applianceDefinitions/{yourDefinitionName}",
+                "managedResourceGroupId": "[variables('managedResourceGroup')]",
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    },
+                    "storageAccountType": {
+                        "value": "[parameters('storageAccountType')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
