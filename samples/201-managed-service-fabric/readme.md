@@ -1,5 +1,4 @@
-# Azure Managed Application
-## Service Fabric Cluster, with option for Premium Management with OMS
+## Managed Service Fabric with Azure management services
 
 ### How to try out this Azure Managed Application
 
