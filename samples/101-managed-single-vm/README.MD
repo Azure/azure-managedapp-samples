@@ -1,6 +1,6 @@
-# Deploy a domain joined single VM that is connected to an ER network and registered with Azure Automation DSC pull server
+## Managed Domain Joined single VM, connected to an ER network and registered to Azure Automation DSC
 
-This template allows you to deploy a single VM via appliance, joined to a domain, on an ER network, and register with an Azure Automation DSC pull server.
+### How to try out this Azure Managed Application
 
 ### User specific updates to project files and creating Appliance Definition
 
@@ -46,56 +46,56 @@ This template allows you to deploy a single VM via appliance, joined to a domain
 armclient.exe PUT /subscriptions/5d68ee96-7272-4664-b122-9xxxxxxxxx/resourceGroups/{resourcegroupname}/providers/Microsoft.Solutions/applianceDefinitions/singleVM?api-version=2016-09-01-preview C:\repos\appliancedefinition.json
 ```
 
-# Deploying from Powershell #
+#### Deploying from Powershell #
 
-## Sample script with no warranty ##
-```
-# User Variables - update this section with your parameters
-
-$subscriptionId = '5d68ee96-7272-4664-b122-xxxxxxx'
-$depName ="Single-VM"
-$resourceGroupName = "put your RG here"
-$resourceGroupLocation = 'West Central US'
-$parametersFilePath = "C:\repos\maintemplate.parameters.json"
-$templateFilePath = "C:\repos\MainTemplate.json"
-
-# Don't change from here below
-# Sign in to azure
-
-Write-Host 'Logging in...'
-try{
-    $context = Get-AzureRmContext -ErrorAction silentlycontinue
-}catch{
-}
-if($context -eq $null)
-{
-    Add-AzureRmAccount;
-}
-
-# Select subscription
-
-Write-Host "Selecting subscription '$subscriptionId'";
-Select-AzureRmSubscription -SubscriptionID $subscriptionId;
-
-# Create requested resource group
-
-$exists = Get-AzureRmResourceGroup -Location $resourceGroupLocation | Where-Object {$_.ResourceGroupName -eq  $resourceGroupName}
-if (!$exists) {
-    Write-Host "Creating resource group '$resourceGroupName' in location '$resourceGroupLocation'";
-    New-AzureRMResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation -Force
-}else {
-    Write-Host "Using existing resource group '$resourceGroupName'";
-}
-
-
-# Splatting parameters
-
-$splat = @{'Name'=$depName;
-    'ResourceGroupName'=$resourceGroupName;
-    'TemplateFile'=$templateFilePath;
-    'TemplateParameterFile'= $parametersFilePath
-}
-
-Write-Output "Starting Deployment"
-New-AzureRmResourceGroupDeployment @splat -verbose
-```
+##### Sample script with no warranty ##
+	```
+	# User Variables - update this section with your parameters
+	
+	$subscriptionId = '5d68ee96-7272-4664-b122-xxxxxxx'
+	$depName ="Single-VM"
+	$resourceGroupName = "put your RG here"
+	$resourceGroupLocation = 'West Central US'
+	$parametersFilePath = "C:\repos\maintemplate.parameters.json"
+	$templateFilePath = "C:\repos\MainTemplate.json"
+	
+	# Don't change from here below
+	# Sign in to azure
+	
+	Write-Host 'Logging in...'
+	try{
+	    $context = Get-AzureRmContext -ErrorAction silentlycontinue
+	}catch{
+	}
+	if($context -eq $null)
+	{
+	    Add-AzureRmAccount;
+	}
+	
+	# Select subscription
+	
+	Write-Host "Selecting subscription '$subscriptionId'";
+	Select-AzureRmSubscription -SubscriptionID $subscriptionId;
+	
+	# Create requested resource group
+	
+	$exists = Get-AzureRmResourceGroup -Location $resourceGroupLocation | Where-Object {$_.ResourceGroupName -eq  $resourceGroupName}
+	if (!$exists) {
+	    Write-Host "Creating resource group '$resourceGroupName' in location '$resourceGroupLocation'";
+	    New-AzureRMResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation -Force
+	}else {
+	    Write-Host "Using existing resource group '$resourceGroupName'";
+	}
+	
+	
+	# Splatting parameters
+	
+	$splat = @{'Name'=$depName;
+	    'ResourceGroupName'=$resourceGroupName;
+	    'TemplateFile'=$templateFilePath;
+	    'TemplateParameterFile'= $parametersFilePath
+	}
+	
+	Write-Output "Starting Deployment"
+	New-AzureRmResourceGroupDeployment @splat -verbose
+	```
