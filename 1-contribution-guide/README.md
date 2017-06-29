@@ -3,7 +3,7 @@
 This repository contains all currently available Azure Managed Application samples contributed by the community. A 
 The following information is relevant to get started with contributing to this repository.
 
-+ [**Contribution guide**](/1-contribution-guide/readme.md#contribution-guide). Describes the minimal guidelines for contributing.
++ [**Contribution guide**](/1-contribution-guide/README.md#contribution-guide). Describes the minimal guidelines for contributing.
 + [**Best practices**](/1-contribution-guide/best-practices.md#best-practices). Best practices for improving the quality of Azure Managed Application design.
 + [**Git tutorial**](/1-contribution-guide/git-tutorial.md#git-tutorial). Step by step to get you started with Git.
 + [**Useful Tools**](/1-contribution-guide/useful-tools.md#useful-tools). Useful resources and tools for Azure development.
