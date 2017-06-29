@@ -16,7 +16,6 @@ To deploy the samples into your own Azure environment, download the repository a
 
 Once extracted, you can use this [PowerShell script example](/1-contribution-guide/psscript.md) to modify the files to work in your environment, and initialize the Managed Application offering in Service Catalog
 
-
 ## Contribution guide
 
 To make sure your Managed Application sample is added to this repository, please follow these guidelines. Any Managed Application sample that are out of compliance will be added to the **blacklist** and not be merged.
@@ -51,7 +50,5 @@ The README.md describes your deployment. A good description helps other communit
 + *Optional: Description on how to use the Managed Application
 + *Optional: Notes
 
-
-```
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 ```
