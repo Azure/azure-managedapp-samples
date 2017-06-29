@@ -14,7 +14,7 @@ To deploy the samples into your own Azure environment, download the repository a
 
 ![media](./images/downloadrepo.png)
 
-Once extracted, you can use this [PowerShell script](./psscript.md) to modify the files to work in your environment, and initialize the Managed Application offering in Service Catalog
+Once extracted, you can use this [PowerShell script](/psscript.md) to modify the files to work in your environment, and initialize the Managed Application offering in Service Catalog
 
 
 ## Contribution guide
