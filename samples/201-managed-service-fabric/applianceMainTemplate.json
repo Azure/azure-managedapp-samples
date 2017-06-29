@@ -45,7 +45,7 @@
         },
         "vmNodeType0Name": {
             "type": "string",
-            "defaultValue": "catsf",
+            "defaultValue": "sfvmss",
             "maxLength": 9,
             "metadata": {
                 "description": "Specify type name"
@@ -67,8 +67,7 @@
     },
     "variables": {
         "addressPrefix": "10.0.0.0/16",
-        "omsWorkspaceName": "[concat(resourceGroup().name, uniqueString('omsws'))]",
-        "omsRegion": "eastus",
+        "omsWorkspaceName": "[concat(resourceGroup().name, '-', 'managed-oms')]",
         "subnet0Prefix": "10.0.0.0/24",
         "publicIPAddressName": "[toLower(concat('pip', parameters('sfpublicIPAddressName')))]",
         "lbName": "[concat('lbn', uniqueString(resourceGroup().Id))]",
@@ -105,6 +104,36 @@
                 }
             ]
         },
+        "omsLocation": {
+            "eastasia": "southeastasia",
+            "southeastasia": "southeastasia",
+            "centralus": "westcentralus",
+            "eastus": "eastus",
+            "eastus2": "eastus",
+            "westus": "westcentralus",
+            "northcentralus": "westcentralus",
+            "southcentralus": "westcentralus",
+            "northeurope": "westeurope",
+            "westeurope": "westeurope",
+            "japanwest": "southeastasia",
+            "japaneast": "southeastasia",
+            "brazilsouth": "eastus",
+            "australiaeast": "australiasoutheast",
+            "australiasoutheast": "australiasoutheast",
+            "southindia": "southeastasia",
+            "centralindia": "southeastasia",
+            "westindia": "southeastasia",
+            "canadacentral": "eastus",
+            "canadaeast": "eastus",
+            "uksouth": "westeurope",
+            "ukwest": "westeurope",
+            "westcentralus": "westcentralus",
+            "westus2": "westcentralus",
+            "koreacentral": "southeastasia",
+            "koreasouth": "southeastasia",
+            "eastus2euap": "eastus"
+        },
+        "omsWorkspaceLocation": "[variables('omsLocation')[parameters('computeLocation')]]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnet0Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet0Name'))]",
         "lbID0": "[resourceId('Microsoft.Network/loadBalancers', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
@@ -340,7 +369,7 @@
                                 "name": "[concat(parameters('vmNodeType0Name'),'_ServiceFabricNode')]",
                                 "properties": {
                                     "type": "ServiceFabricNode",
-                                    "autoUpgradeMinorVersion": false,
+                                    "autoUpgradeMinorVersion": true,
                                     "protectedSettings": {
                                         "StorageAccountKey1": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('supportLogStorageAccountName')),'2015-06-15').key1]",
                                         "StorageAccountKey2": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('supportLogStorageAccountName')),'2015-06-15').key2]"
@@ -355,7 +384,7 @@
                                     "typeHandlerVersion": "1.0"
                                 }
                             },
-                            {                                
+                            {
                                 "name": "[concat(parameters('vmNodeType0Name'),'OMS')]",
                                 "properties": {
                                     "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -541,12 +570,12 @@
         },
         {
             "apiVersion": "2015-11-01-preview",
-            "location": "[variables('omsRegion')]",
+            "location": "[variables('omsWorkspaceLocation')]",
             "name": "[variables('omsWorkspacename')]",
             "type": "Microsoft.OperationalInsights/workspaces",
             "properties": {
                 "sku": {
-                    "name": "Free"
+                    "name": "Standard"
                 }
             },
             "resources": [
@@ -872,7 +901,7 @@
         {
             "condition": "[equals(parameters('enablePremiumManagement'), 'Yes')]",
             "apiVersion": "2015-11-01-preview",
-            "location": "[variables('omsRegion')]",
+            "location": "[variables('omsWorkspaceLocation')]",
             "name": "[concat(variables('omsSolution').batch[copyIndex()].solutionName)]",
             "type": "Microsoft.OperationsManagement/solutions",
             "dependsOn": [
