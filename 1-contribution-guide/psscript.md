@@ -1,4 +1,4 @@
-##PowerShell example
+## PowerShell example
 ##### PowerShell example to initialize Managed Application in Service Catalog
 
 1. Navigate to the folder where you extracted the sample you want to use
