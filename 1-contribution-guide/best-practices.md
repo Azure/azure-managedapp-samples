@@ -107,6 +107,41 @@ Example:
 
 >**Note**: A complex object cannot contain an expression that references a value from a complex object. Define a separate variable for this purpose.
 
+* If you include Azure management services to your Managed Application, such as Log Analytics, Azure Automation, Backup and Site Recovery, you **must** **not** use additional parameters for these resource locations. Instead, use the following pattern using variables, to place those services in the closest available Azure region
+
+        "logAnalyticsLocationMap": {
+            "eastasia": "southeastasia",
+            "southeastasia": "southeastasia",
+            "centralus": "westcentralus",
+            "eastus": "eastus",
+            "eastus2": "eastus",
+            "westus": "westcentralus",
+            "northcentralus": "westcentralus",
+            "southcentralus": "westcentralus",
+            "northeurope": "westeurope",
+            "westeurope": "westeurope",
+            "japanwest": "southeastasia",
+            "japaneast": "southeastasia",
+            "brazilsouth": "eastus",
+            "australiaeast": "australiasoutheast",
+            "australiasoutheast": "australiasoutheast",
+            "southindia": "southeastasia",
+            "centralindia": "southeastasia",
+            "westindia": "southeastasia",
+            "canadacentral": "eastus",
+            "canadaeast": "eastus",
+            "uksouth": "westeurope",
+            "ukwest": "westeurope",
+            "westcentralus": "westcentralus",
+            "westus2": "westcentralus",
+            "koreacentral": "southeastasia",
+            "koreasouth": "southeastasia",
+            "eastus2euap": "eastus"
+        },
+        "logAnalyticsLocation": "[variables('logAnalyticsLocationMap')[parameters('location')]]"
+
+>**NOTE**: To find the available Azure regions for a Resource Provider, you can use the following PowerShell cmdlet: ```Get-AzureRmResourceProvider -ProviderNamespace Microsoft.OperationalInsights | select -ExpandProperty Locations```
+
 The domainNameLabel property for publicIPAddresses **must** be **unique**. domainNameLabel is required to be between 3 and 63 characters long and to follow the rules specified by this regular expression ^[a-z][a-z0-9-]{1,61}[a-z0-9]$. As the uniqueString function will generate a string that is 13 characters long in the example below it is presumed that the dnsPrefixString prefix string has been checked to be no more than 50 characters long and to conform to those rules.
 
 >**Note**: The recommended approach for creating a publicIPAddresses is to use the Microsoft.Network.PublicIpAddressCombo in applianceCreateUIDefinition.json which will validate the input and make sure the domainNameLabel is available, however if a Managed Application creates new publicIPAddresses in a template without using this element to provide parameters then it should ensure that the domainNameLabel properties used for them are unique
