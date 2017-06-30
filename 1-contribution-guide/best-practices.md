@@ -1,11 +1,11 @@
 ## Best practices
 
-#### Best practices for Resource Manger templates for Azure Managed Application
+#### In general..
 
 + It is a good practice to pass your Managed Application templates and UiDefinition through a JSON linter to remove extraneous commas, parenthesis, brackets that may break the deployment. Try http://jsonlint.com/ or a linter package for your favorite editing environment (Visual Studio Code, Atom, Sublime Text, Visual Studio etc.)
 + It's also a good idea to format your JSON for better readability. You can use a JSON formatter package for your local editor or [format online using this link](https://www.bing.com/search?q=json+formatter).
 
-### The following guidelines are relevant to the Managed Application Resource Manager templates.
+#### The following guidelines are relevant to the Managed Application Resource Manager templates.
 
 * Template parameters should follow **camelCasing**
 
