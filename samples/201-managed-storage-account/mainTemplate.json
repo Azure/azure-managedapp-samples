@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountName": {
+        "storageAccountNamePrefix": {
             "type": "string",
             "metadata": {
                 "description": "Specify the name of the storage account"
@@ -19,7 +19,7 @@
         {
             "type": "Microsoft.Solutions/appliances",
             "apiVersion": "2016-09-01-preview",
-            "name": "[parameters('storageAccountName')]",
+            "name": "[concat(parameters('storageAccountNamePrefix'), '-', 'managed')]",
             "location": "[resourceGroup().location]",
             "kind": "serviceCatalog",
             "properties": {
@@ -27,7 +27,7 @@
                 "managedResourceGroupId": "[variables('managedResourceGroup')]",
                 "parameters": {
                     "storageAccountName": {
-                        "value": "[parameters('storageAccountName')]"
+                        "value": "[parameters('storageAccountNamePrefix')]"
                     },
                     "storageAccountType": {
                         "value": "[parameters('storageAccountType')]"
