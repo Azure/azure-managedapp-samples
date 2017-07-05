@@ -19,7 +19,7 @@
                         "name": "storageAccounts",
                         "type": "Microsoft.Storage.MultiStorageAccountCombo",
                         "label": {
-                            "prefix": "Storage account name",
+                            "prefix": "Storage account name prefix",
                             "type": "Storage account type"
                         },
                         "defaultValue": {
@@ -37,8 +37,9 @@
             }
         ],
         "outputs": {
-            "storageAccountName": "[steps('storageConfig').storageAccounts.prefix]",
-            "storageAccountType": "[steps('storageConfig').storageAccounts.type]"
+            "storageAccountNamePrefix": "[steps('storageConfig').storageAccounts.prefix]",
+            "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
+            "location": "[location()]"
         }
     }
 }
