@@ -1,4 +1,4 @@
-## Managed Azure Storage Account
+## Managed Web Application
 
 ### How to try out this Azure Managed Application
 
@@ -34,7 +34,7 @@ Create a new resource group where you will create the appliance definition a bit
 If you haven't downloaded the files yet, now is a good time :-)
 Open *mainTemplate.json* in your favorite JSON editor, and modify the following line to reflect your environment:
 
-	"applianceDefinitionId": "/subscriptions/{yourSubscriptionId}/resourceGroups/{yourResourceGroupname}/providers/Microsoft.Solutions/applianceDefinitions/storageDef",
+	"applianceDefinitionId": "/subscriptions/{yourSubscriptionId}/resourceGroups/{yourResourceGroupname}/providers/Microsoft.Solutions/applianceDefinitions/ManagedWebApp",
 
 Save the changes
 
@@ -46,10 +46,10 @@ Put all the three files into a zip-folder, and upload it to a storage account in
 
 Create the managed application definition (in westcentralus) using Azure CLI (*PowerShell support will come shortly*). Below you can see an example:
 
-	az managedapp definition create -n storageDef -l "westcentralus" --resource-group ApplianceDef --lock-level ReadOnly --display-name "Managed Storage" --description "Managed Azure Storage Account"  --authorizations "688378e8-50b1-4970-ac7e-596bf061475c:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" --package-file-uri "https://catappliance.blob.core.windows.net/def/storage.zip" --debug
+	az managedapp definition create -n ManagedWebApp -l "westcentralus" --resource-group ApplianceDef --lock-level ReadOnly --display-name "Managed Web App" --description "Managed Web App with Azure management"  --authorizations "688378e8-50b1-4970-ac7e-596bf061475c:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" --package-file-uri "https://catappliance.blob.core.windows.net/def/webapp.zip" --debug
 
 #### Step 6
 
 You can now deploy this Managed Application (in westcentralus) from the Service Catalog in Azure
 
-![alt text](images/storage.png "Azure Managed Application")
+![alt text](images/webapp.png "Managed Web Application")
