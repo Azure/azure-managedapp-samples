@@ -1,7 +1,6 @@
 # Azure Managed Application samples
 
-This repository contains all currently available Azure Managed Application samples contributed by the community. A 
-The following information is relevant to get started with contributing to this repository.
+This repository contains all currently available Azure Managed Application samples contributed by the community. The following information is relevant to get started with contributing to this repository.
 
 + [**Contribution guide**](/1-contribution-guide/README.md#contribution-guide). Describes the minimal guidelines for contributing.
 + [**Best practices**](/1-contribution-guide/best-practices.md#best-practices). Best practices for improving the quality of Azure Managed Application design.
