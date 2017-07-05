@@ -1,4 +1,4 @@
-## Best practices
+# Best practices
 
 #### In general..
 

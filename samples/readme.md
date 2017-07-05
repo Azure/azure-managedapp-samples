@@ -1,1 +1,3 @@
-This folder contains the different managed application samples for your reference.
+This folder contains the different Managed Application samples for your reference.
+
+kn
