@@ -115,12 +115,6 @@ The ````Microsoft.Solutions/appliances```` resource should look similar to this:
             "kind": "marketplace",
             "apiVersion": "2016-09-01-preview",
             "location": "[parameters('location')]",
-            "plan": {
-                "name": "Application-name-offer",
-                "publisher": "NameOfPublisher",
-                "product": "NameOfProduct",
-                "version": "1.0"
-            },
             "properties": {
                 "managedResourceGroupId": "managedResourceGroupId": "[concat(resourceGroup().id,'-application-resources')]",
                 "publisherPackageId":"azureappliancetest.managedapptest.previewmanagedsku.1.0.0",
