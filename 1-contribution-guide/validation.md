@@ -107,11 +107,12 @@ When you plan to publish a managed application to Azure marketplace, you still n
 
 * mainTemplate.json
 
-Update the *mainTemplate.json* by removing ````"kind": "serviceCatalog"```` from the resource, and the ````"applianceDefinitionId"```` from the property envelope.
+Update the *mainTemplate.json* by replacing ````"kind": "serviceCatalog"```` with ````"kind": "marketplace"````, and the ````"applianceDefinitionId"```` with ````"publisherPackageId"````.
 The ````Microsoft.Solutions/appliances```` resource should look similar to this:
 
             "type": "Microsoft.Solutions/appliances",
             "name": "[variables('managedAppName')]",
+            "kind": "marketplace",
             "apiVersion": "2016-09-01-preview",
             "location": "[parameters('location')]",
             "plan": {
@@ -121,7 +122,8 @@ The ````Microsoft.Solutions/appliances```` resource should look similar to this:
                 "version": "1.0"
             },
             "properties": {
-                "ManagedResourceGroupId": "managedResourceGroupId": "[concat(resourceGroup().id,'-application-resources')]"",
+                "managedResourceGroupId": "managedResourceGroupId": "[concat(resourceGroup().id,'-application-resources')]",
+                "publisherPackageId":"azureappliancetest.managedapptest.previewmanagedsku.1.0.0",
                 "parameters": {
                     ...
                 }
