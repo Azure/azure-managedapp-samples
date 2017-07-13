@@ -72,9 +72,13 @@ To name the *managed Resource Group* properly, meaning it will guarantee a level
 
 ````"managedResourceGroupId": "[concat(resourceGroup().id,'-application-resources')]"````
 
-````"managedResourceGroupId": "[concat(parameters('dnsName'), resourceGroup().id)]"````
+````"managedResourceGroupId": "[concat(resourceGroup().id, parameters('dnsName'))]"````
 
-````"managedResourceGroupId": "[concat(resourceGroup().name, uniqueString('app'))]"````
+````"managedResourceGroupId": "[concat(resourceGroup().id, uniqueString('app'))]"````
+
+````"managedResourceGroupId": "[concat(resourceGroup().id, variables('offerName'))]"````
+
+>Note: the ````managedResourceGroupId```` property expects the ````resourceId```` of the managed Resource Group, which has the following format ````/subscriptions/{subscriptionId}/resourceGroups/{resoureGroupName}````. The examples above will ensure the expected input, combined with some sample parameters/variables to help identifying these resource groups.S
 
 * applianceCreateUiDefinition.json
 
