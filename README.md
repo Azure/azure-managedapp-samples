@@ -7,7 +7,9 @@ This repository contains samples of Azure Managed Applications that can be used 
 
 [Azure Managed Application overview](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-overview)
 
-[Create and publish an Azure Managed Application](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-publishing)
+[Create and publish Azure Managed Applications to Service Catalog](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-publishing)
+
+[Create and publish Azure Managed Applications to Azure Marketplace](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-author-marketplace)
 
 [Consume an Azure Managed Application](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-consumption)
 
