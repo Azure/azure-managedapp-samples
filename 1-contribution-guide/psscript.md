@@ -81,7 +81,8 @@ try {
                         "parameters": {}
                     }
                 }
-            ]
+            ],
+            "outputs": {}
         }
 '@
 
