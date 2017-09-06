@@ -17,7 +17,7 @@ secret="mySuperSecret12"
 
 az group create -n $group -l westcentralus
 
-az group create -n knvault -l westcentralus
+az group create -n $group -l westcentralus
 
 az keyvault create --name $vaultName --resource-group $group --location $location --enabled-for-template-deployment true
 
@@ -34,18 +34,6 @@ To retrieve the secret from the KeyVault during deployment of the managed applic
 ### How to try out this Azure Managed Application
 
 First, download all the files for this sample, to a folder on your machine.
-
-* applianceMainTemplate.json
-
-This is the ARM template that will deploy all the underlying Azure resources to the managed resource group, for the managed application
-
-* mainTemplate.json
-
-This is the template that the consumer will deploy, which will be mapped towards the applianceMainTemplate. This template will deploy the Managed Application (*appliance resource type*)
-
-* applianceCreateUiDefinition.json
-
-This us the UI definiton the consumer will interact with, when deploying the managed application from the service catalog in Azure
 
 #### Step 1
 
