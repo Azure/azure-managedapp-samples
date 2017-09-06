@@ -1,0 +1,163 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specify the location for the Azure resources"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D1_v2",
+            "metadata": {
+                "description": "Select the VM Size"
+            }
+        },
+        "vmNamePrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Assign a prefix for the VM name"
+            }
+        },
+        "enablePremiumManagement": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Select whether premium management should be enabled or not"
+            }
+        },
+        "dnsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specify the DNS name for the managed web app"
+            }
+        },
+        "publicIPAddressName": {
+            "type": "string",
+            "metadata": {
+                "description": "Assign a name for the public IP address"
+            }
+        }        
+    },
+    "variables": {
+        "artifacts": {
+            "logAnalytics": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/oms.json')]",
+            "compute": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/managedVm.json')]",
+            "scripts": "[uri(deployment().properties.templateLink.uri, 'scripts/ManagedWebApplication.ps1.zip')]"
+        },
+        "logAnalyticsLocationMap": {
+            "eastasia": "southeastasia",
+            "southeastasia": "southeastasia",
+            "centralus": "westcentralus",
+            "eastus": "eastus",
+            "eastus2": "eastus",
+            "westus": "westcentralus",
+            "northcentralus": "westcentralus",
+            "southcentralus": "westcentralus",
+            "northeurope": "westeurope",
+            "westeurope": "westeurope",
+            "japanwest": "southeastasia",
+            "japaneast": "southeastasia",
+            "brazilsouth": "eastus",
+            "australiaeast": "australiasoutheast",
+            "australiasoutheast": "australiasoutheast",
+            "southindia": "southeastasia",
+            "centralindia": "southeastasia",
+            "westindia": "southeastasia",
+            "canadacentral": "eastus",
+            "canadaeast": "eastus",
+            "uksouth": "westeurope",
+            "ukwest": "westeurope",
+            "westcentralus": "westcentralus",
+            "westus2": "westcentralus",
+            "koreacentral": "southeastasia",
+            "koreasouth": "southeastasia",
+            "eastus2euap": "eastus"
+        },
+        "logAnalyticsLocation": "[variables('logAnalyticsLocationMap')[parameters('location')]]",
+        "logAnalyticsWorkspaceName": "[concat(resourceGroup().name, '-', uniqueString('oms'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-09-01",
+            "name": "logAnalytics",
+            "properties": {
+                "mode":"Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('artifacts').logAnalytics]"
+                },
+                "parameters": {                 
+                    "omsWorkspaceName": {
+                        "value": "[variables('logAnalyticsWorkspaceName')]"
+                    },
+                    "omsWorkspaceRegion": {
+                        "value": "[variables('logAnalyticsLocation')]"
+                    },
+                    "enablePremiumManagement": {
+                        "value": "[parameters('enablePremiumManagement')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-09-01",
+            "name": "compute",
+            "dependsOn": [
+                "logAnalytics"
+            ],
+            "properties": {
+                "mode":"Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('artifacts').compute]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "vmSize": {
+                        "value": "[parameters('vmSize')]"
+                    },
+                    "vmNamePrefix": {
+                        "value": "[parameters('vmNamePrefix')]"
+                    },
+                    "administratorLoginPassword": {
+                        "reference": {
+                            "keyVault": {
+                                "id": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{keyVaultName}"
+                            },
+                            "secretName": "appsecret"
+                        }
+                    },   
+                    "dscScript": {
+                        "value": "[variables('artifacts').scripts]"
+                    },
+                    "logAnalyticsWorkspaceName": {
+                        "value": "[variables('logAnalyticsWorkspaceName')]"
+                    },
+                    "publicIPAddressName": {
+                        "value": "[parameters('publicIPAddressName')]"
+                    },
+                    "dnsName": {
+                        "value": "[parameters('dnsName')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "applicationEndpoint": {
+            "type": "string",
+            "value": "[reference('compute').outputs.vmEndpoint.value]"
+        }
+    }
+}
