@@ -1,22 +1,8 @@
-## Managed Web Application
+# Managed Web Application
 
-### How to try out this Azure Managed Application
+## How to try out this Azure Managed Application
 
-First, download all the files for this sample, to a folder on your machine.
-
-* applianceMainTemplate.json
-
-This is the ARM template that will deploy all the underlying Azure resources to the managed resource group, for the managed application
-
-* mainTemplate.json
-
-This is the template that the consumer will deploy, which will be mapped towards the applianceMainTemplate. This template will deploy the Managed Application (*appliance resource type*)
-
-* applianceCreateUiDefinition.json
-
-This us the UI definiton the consumer will interact with, when deploying the managed application from the service catalog in Azure
-
-#### Step 1
+### Step 1
 
 You will need the object Id of your Azure Ad group, and the principal Id of the Azure role, which will be used to define the level of authorization towards the underlying Azure resources.
 
@@ -25,11 +11,11 @@ Here's an example from my environment, where I have the object id from a newly c
 	Object Id of the Azure Ad group: '2d7641f0-dbb7-4097-bb19-c098c8756086'
 	Principal Id of the Owner: '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
 
-#### Step 2
+### Step 2
 
 Create a new resource group where you will create the appliance definition a bit later
 
-#### Step 3
+### Step 3
 
 If you haven't downloaded the files yet, now is a good time :-)
 Open *mainTemplate.json* in your favorite JSON editor, and modify the following line to reflect your environment:
@@ -38,17 +24,17 @@ Open *mainTemplate.json* in your favorite JSON editor, and modify the following 
 
 Save the changes
 
-#### Step 4
+### Step 4
 
 Put all the three files into a zip-folder, and upload it to a storage account in Azure
 
-#### Step 5
+### Step 5
 
 Create the managed application definition (in westcentralus) using Azure CLI (*PowerShell support will come shortly*). Below you can see an example:
 
 	az managedapp definition create -n ManagedWebApp -l "westcentralus" --resource-group ApplianceDef --lock-level ReadOnly --display-name "Managed Web App" --description "Managed Web App with Azure management"  --authorizations "688378e8-50b1-4970-ac7e-596bf061475c:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" --package-file-uri "https://catappliance.blob.core.windows.net/def/webapp.zip" --debug
 
-#### Step 6
+### Step 6
 
 You can now deploy this Managed Application (in westcentralus) from the Service Catalog in Azure
 

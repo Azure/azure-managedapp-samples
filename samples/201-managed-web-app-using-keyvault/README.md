@@ -1,10 +1,10 @@
-## Managed Web Application - using KeyVault
+# Managed Web Application - using KeyVault
 
-### Prerequisites
+## Prerequisites
 
 This sample is using an existing KeyVault, to retrieve the secret (password) to the virtual machine used for the managed application.
 
-#### Pre-req 1
+### Pre-req 1
 
 If you haven't created and enabled a KeyVault for template deployment yet, you can create a new using AzureCLI as below:
 
@@ -25,7 +25,7 @@ az keyvault secret set --vault-name $vaultName --name appsecret --value $secret
 
 ````
 
-#### Pre-req 2
+### Pre-req 2
 
 To retrieve the secret from the KeyVault during deployment of the managed application, you must grant the **Appliance Resource Provider** *Contributor* access at the KeyVault resource
 
@@ -35,7 +35,7 @@ To retrieve the secret from the KeyVault during deployment of the managed applic
 
 First, download all the files for this sample, to a folder on your machine.
 
-#### Step 1
+### Step 1
 
 You will need the object Id of your Azure Ad group, and the principal Id of the Azure role, which will be used to define the level of authorization towards the underlying Azure resources.
 
@@ -46,11 +46,11 @@ Object Id of the Azure Ad group: '2d7641f0-dbb7-4097-bb19-c098c8756086'
 Principal Id of the Owner: '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
 ````
 
-#### Step 2
+### Step 2
 
 Create a new resource group where you will create the appliance definition a bit later
 
-#### Step 3
+### Step 3
 
 Open *mainTemplate.json* in your favorite JSON editor, and modify the following line to reflect your environment:
 
@@ -60,7 +60,7 @@ Open *mainTemplate.json* in your favorite JSON editor, and modify the following 
 
 Save the changes
 
-#### Step 4
+### Step 4
 
 Open *applianceMainTemplate.json*, and modify the "id" to point to your KeyVault and secret:
 
@@ -75,11 +75,11 @@ Open *applianceMainTemplate.json*, and modify the "id" to point to your KeyVault
                     },
 ````
 
-#### Step 5
+### Step 5
 
 Put all the three files into a zip-folder, and upload it to a storage account in Azure
 
-#### Step 6
+### Step 6
 
 Create the managed application definition (in westcentralus) using Azure CLI (*PowerShell support will come shortly*). Below you can see an example:
 
@@ -87,7 +87,7 @@ Create the managed application definition (in westcentralus) using Azure CLI (*P
 az managedapp definition create -n ManagedWebApp -l "westcentralus" --resource-group ApplianceDef --lock-level ReadOnly --display-name "Managed Web App" --description "Managed Web App with Azure management"  --authorizations "688378e8-50b1-4970-ac7e-596bf061475c:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" --package-file-uri "https://catappliance.blob.core.windows.net/def/webapp.zip" --debug
 ````
 
-#### Step 7
+### Step 7
 
 You can now deploy this Managed Application (in westcentralus) from the Service Catalog in Azure
 
