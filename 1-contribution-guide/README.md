@@ -4,6 +4,7 @@ This repository contains all currently available Azure Managed Application sampl
 
 + [**Contribution guide**](/1-contribution-guide/README.md#contribution-guide). Describes the minimal guidelines for contributing.
 + [**Best practices**](/1-contribution-guide/best-practices.md#best-practices). Best practices for improving the quality of Azure Managed Application design.
++ [**Transitioning to Marketplace Managed App**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace). Describes the changes needed for *mainTemplate.json*.
 + [**Validation**](/1-contribution-guide/validation.md#validation). Recommended steps for validation of Azure Managed Applications.
 + [**Git tutorial**](/1-contribution-guide/git-tutorial.md#git-tutorial). Step by step to get you started with Git.
 + [**Useful Tools**](/1-contribution-guide/useful-tools.md#useful-tools). Useful resources and tools for Azure development.
