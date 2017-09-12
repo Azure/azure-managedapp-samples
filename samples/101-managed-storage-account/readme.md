@@ -1,9 +1,9 @@
-## Managed Azure Storage Account (without Ui Definition)
+# Managed Azure Storage Account (without Ui Definition)
 
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
 [**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
 
-### How to try out this Azure Managed Application
+## How to try out this Azure Managed Application
 
 Step 1: Create an ARM template (Use the applianceMainTemplate.json)
 
