@@ -1,25 +1,25 @@
 # Best practices
 
-#### In general..
+## In general..
 
 + It is a good practice to pass your Managed Application templates and UiDefinition through a JSON linter to remove extraneous commas, parenthesis, brackets that may break the deployment. Try http://jsonlint.com/ or a linter package for your favorite editing environment (Visual Studio Code, Atom, Sublime Text, Visual Studio etc.)
 + It's also a good idea to format your JSON for better readability. You can use a JSON formatter package for your local editor or [format online using this link](https://www.bing.com/search?q=json+formatter).
 
-#### The following guidelines are relevant to the Managed Application Resource Manager templates.
+## The following guidelines are relevant to the Managed Application Resource Manager templates.
 
 * Template parameters should follow **camelCasing**
 
 Example:
-
-		"parameters": {
-			"storagePrefixName": {
-				"type": "string",				
-				"metadata": {
-					"description": "Specify the prefix of the storage account name"
+````json
+	"parameters": {	
+		"storagePrefixName": {
+			"type": "string",				
+			"metadata": {
+			"description": "Specify the prefix of the storage account name"
 			}
 		}
 	 }
-
+````
 
 * Minimize parameters whenever possible, this allows for a good "hello world" experience where the user doesn't have to answer a number of questions to complete a deployment.  If you can use a variable or a literal, do so.  
  
@@ -33,7 +33,7 @@ Example:
 	 
 * Every parameter in the template should have the **lower-case description** tag specified using the metadata property. This looks like below
 
-
+````json
 		"parameters": {
 		  "storageAccountType": {
 		    "type": "string",
@@ -42,6 +42,7 @@ Example:
 		    }
 		  }
 		}
+````
 
 * Template parameters **must not** include *allowedValues* for the following parameter types
 	* Vm Size
@@ -52,10 +53,12 @@ Example:
 
 * When nested templates or scripts are being used, the *applianceMainTemplate.json* **must** include a variable with the uri() function with deployment().properties.templateLink.uri - to automatically resolve the URL for nested templates and scripts. The variable(s) would look similar to this:
 
+````json
 		"variables": {
 		    "nestedTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/mytemplate.json')]",
 		    "scriptsUrl": "[uri(deployment().properties.templateLink.uri, 'scripts/myscript.ps1')]"
 		}
+````
 
 * Template parameters **must not** include default values for parameters that represents the following types
 	* Storage Account Name prefix
@@ -66,7 +69,8 @@ Example:
 * Do not create a parameter for a **storage account name**, but specify it is for **storage account name prefix**. Storage account names need to be lower case and can't contain hyphens (-) in addition to other domain name restrictions. A storage account has a limit of 24 characters. They also need to be globally unique. To prevent any validation issue configure a variables (using the expression **uniqueString** and a static value **storage**). Storage accounts with a common prefix (uniqueString) will not get clustered on the same racks.
 
 Example:
-	
+
+````json	
     "parameters": {
         "storageAccountNamePrefix": {
             "type": "string",
@@ -78,12 +82,13 @@ Example:
     "variables": {
         "storageAccountName": "[concat(parameters('storageAccountNamePrefix'), uniqueString('storage'))]"
     },
-	 
+````
+
 >**Note**: Templates should consider storage accounts throughput constraints and deploy across multiple storage accounts where necessary. Templates should distribute virtual machine disks across multiple storage accounts to avoid platform throttling.
  
 * Passwords **must** be passed into parameters of type **securestring**. Do not specify a defaultValue for a parameter that is used for a password or an SSH key. Passwords must also be passed to **customScriptExtension** using the **commandToExecute** property in protectedSettings.
 
-
+````json
 		 "properties": {
 		 	"publisher": "Microsoft.Azure.Extensions",
 		 	"type": "CustomScript",
@@ -98,6 +103,7 @@ Example:
 		 		"commandToExecute": "[concat('sh install_lamp.sh ', parameters('mySqlPassword'))]"
 		 	}
 		 }
+````
 
 >**Note**: In order to ensure that secrets which are passed as parameters to virtualMachines/extensions are encrypted, the protectedSettings property of the relevant extensions must be used.
  
@@ -109,6 +115,7 @@ Example:
 
 * If you include Azure management services to your Managed Application, such as Log Analytics, Azure Automation, Backup and Site Recovery, you **must** **not** use additional parameters for these resource locations. Instead, use the following pattern using variables, to place those services in the closest available Azure region to the Resource Group
 
+````json
         "logAnalyticsLocationMap": {
             "eastasia": "southeastasia",
             "southeastasia": "southeastasia",
@@ -139,6 +146,7 @@ Example:
             "eastus2euap": "eastus"
         },
         "logAnalyticsLocation": "[variables('logAnalyticsLocationMap')[parameters('location')]]"
+````
 
 >**NOTE**: To find the available Azure regions for a Resource Provider, you can use the following PowerShell cmdlet: 
 >```Get-AzureRmResourceProvider -ProviderNamespace Microsoft.OperationalInsights | select -ExpandProperty Locations```
@@ -147,7 +155,7 @@ The domainNameLabel property for publicIPAddresses **must** be **unique**. domai
 
 >**Note**: The recommended approach for creating a publicIPAddresses is to use the Microsoft.Network.PublicIpAddressCombo in applianceCreateUIDefinition.json which will validate the input and make sure the domainNameLabel is available, however if a Managed Application creates new publicIPAddresses in a template without using this element to provide parameters then it should ensure that the domainNameLabel properties used for them are unique
 
-	
+````json	
 		 "parameters": {
 		 	"dnsPrefixString": {
 		 		"type": "string",
@@ -160,26 +168,63 @@ The domainNameLabel property for publicIPAddresses **must** be **unique**. domai
 		 "variables": {
 		 	"dnsPrefix": "[concat(parameters('dnsPrefixString'),uniquestring(resourceGroup().id))]"
 		 }
+````
 
 * For the public endpoints the user will interact with, you **must** provide this information in the **output** section in the templates, so it can be easily retrieved post deployment
 
+````json
 	    "outputs": {
 	        "vmEndpoint": {
 	            "type": "string",
 	            "value": "[reference(concat(parameters('vmName'), 'IP')).dnsSettings.fqdn]"
 	        }
 	    }
+````
 
 * If using *nested templates*, ensure you are referencing the outputs from the nested templates into the *applianceMainTemplate.json*
 
+````json
 	    "outputs": {
 	        "vmEndpoint": {
 	            "type": "string",
 	            "value": "[reference('nestedDeployment').outputs.vmEndpoint.value]"
 	        }
 	    }
+````
 
 * To capture the outputs into the *mainTemplate.json*, which will be the template the customer interacts with, you **must** have the output section present in the template
 
+````json
     	"outputs": {}
+````
 
+## Transitioning to Marketplace Managed Application
+
+When you have created and verified your Managed Application for Service Catalog, and want to transition to Azure Marketplace with your offering, you need to make the following changes to the *mainTemplate.json* file.
+
+````json
+"variables": {
+    "applianceName": "ManagedApp",
+    "managedRgId": "[concat(resourceGroup().id,'-',variables('applianceName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Solutions/appliances",
+      "name": "[variables('applianceName')]",
+      "apiVersion": "2016-09-01-preview",
+      "location": "[resourceGroup().location]",
+      "kind": "marketplace",
+      "properties": {
+        "managedResourceGroupId": "[variables('managedRgId')]",
+        "publisherPackageId": "yourcompany.offerId-previewSkuId.1.0.0",
+        "parameters": {
+			...
+		}
+````
+
+The example above shows that:
+1. ````"kind": "marketplace"```` is declared at the resource property
+
+2. ````"publisherPackageId": "yourCompany.offerId-previewSkuId.1.0.0"```` reflects the offer you make in the [Cloud Partner portal](https://cloudpartner.azure.com)
+
+[Visit our public documentaiton for more details on how to publish to Marketplace](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-application-author-marketplace)

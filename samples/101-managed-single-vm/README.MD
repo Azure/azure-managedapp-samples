@@ -1,5 +1,8 @@
 ## Managed Domain Joined single VM, connected to an ER network and registered to Azure Automation DSC
 
+>Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
+[**Marketplace Managed Application**](/1-contribution-guide/best-practices.md##Transitioning-to-Marketplace-Managed-Application)
+
 ### How to try out this Azure Managed Application
 
 ### User specific updates to project files and creating Appliance Definition
