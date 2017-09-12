@@ -5,7 +5,6 @@
 
 ## How to try out this Azure Managed Application
 
-
 ### Step 1
 
 You will need the object Id of your Azure Ad group, and the principal Id of the Azure role, which will be used to define the level of authorization towards the underlying Azure resources.
