@@ -1,5 +1,8 @@
 ## Managed Azure Storage Account
 
+>Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
+[**Marketplace Managed Application**](/1-contribution-guide/best-practices.md##Transitioning-to-Marketplace-Managed-Application)
+
 ### How to try out this Azure Managed Application
 
 First, download all the files for this sample, to a folder on your machine.
