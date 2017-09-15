@@ -1,11 +1,11 @@
-## Managed Domain Joined single VM, connected to an ER network and registered to Azure Automation DSC
+# Managed Domain Joined single VM, connected to an ER network and registered to Azure Automation DSC
 
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
-[**Marketplace Managed Application**](/1-contribution-guide/best-practices.md##Transitioning-to-Marketplace-Managed-Application)
+[**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
 
-### How to try out this Azure Managed Application
+## How to try out this Azure Managed Application
 
-### User specific updates to project files and creating Appliance Definition
+## User specific updates to project files and creating Appliance Definition
 
 1.&nbsp;ApplianceDefinition.json
 
@@ -49,9 +49,9 @@
 armclient.exe PUT /subscriptions/5d68ee96-7272-4664-b122-9xxxxxxxxx/resourceGroups/{resourcegroupname}/providers/Microsoft.Solutions/applianceDefinitions/singleVM?api-version=2016-09-01-preview C:\repos\appliancedefinition.json
 ```
 
-#### Deploying from Powershell #
+### Deploying from Powershell #
 
-##### Sample script with no warranty ##
+#### Sample script with no warranty ##
 	```
 	# User Variables - update this section with your parameters
 	
