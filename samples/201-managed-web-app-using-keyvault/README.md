@@ -1,5 +1,8 @@
 # Managed Web Application - using KeyVault
 
+>Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
+[**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
+
 ## Prerequisites
 
 This sample is using an existing KeyVault, to retrieve the secret (password) to the virtual machine used for the managed application.
