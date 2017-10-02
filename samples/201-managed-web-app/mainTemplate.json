@@ -1,5 +1,5 @@
-﻿{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
@@ -55,42 +55,107 @@
             "metadata": {
                 "description": "Assign a name for the public IP address"
             }
-        }
+        }        
     },
     "variables": {
-        "applianceInfraResourceGroupId": "[concat(resourceGroup().id,'-application-resources')]"
+        "artifacts": {
+            "logAnalytics": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/oms.json')]",
+            "compute": "[uri(deployment().properties.templateLink.uri, 'nestedtemplates/managedVm.json')]",
+            "scripts": "[uri(deployment().properties.templateLink.uri, 'scripts/ManagedWebApplication.ps1.zip')]"
+        },
+        "logAnalyticsLocationMap": {
+            "eastasia": "southeastasia",
+            "southeastasia": "southeastasia",
+            "centralus": "westcentralus",
+            "eastus": "eastus",
+            "eastus2": "eastus",
+            "westus": "westcentralus",
+            "northcentralus": "westcentralus",
+            "southcentralus": "westcentralus",
+            "northeurope": "westeurope",
+            "westeurope": "westeurope",
+            "japanwest": "southeastasia",
+            "japaneast": "southeastasia",
+            "brazilsouth": "eastus",
+            "australiaeast": "australiasoutheast",
+            "australiasoutheast": "australiasoutheast",
+            "southindia": "southeastasia",
+            "centralindia": "southeastasia",
+            "westindia": "southeastasia",
+            "canadacentral": "eastus",
+            "canadaeast": "eastus",
+            "uksouth": "westeurope",
+            "ukwest": "westeurope",
+            "westcentralus": "westcentralus",
+            "westus2": "westcentralus",
+            "koreacentral": "southeastasia",
+            "koreasouth": "southeastasia",
+            "eastus2euap": "eastus"
+        },
+        "logAnalyticsLocation": "[variables('logAnalyticsLocationMap')[parameters('location')]]",
+        "logAnalyticsWorkspaceName": "[concat(resourceGroup().name, '-', uniqueString('oms'))]"
     },
     "resources": [
         {
-            "type": "Microsoft.Solutions/appliances",
-            "name": "ManagedWebApplication",
-            "apiVersion": "2016-09-01-preview",
-            "location": "[resourceGroup().Location]",
-            "kind": "ServiceCatalog",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-09-01",
+            "name": "logAnalytics",
             "properties": {
-                "managedResourceGroupId": "[variables('applianceInfraResourceGroupId')]",
-                "applianceDefinitionId": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/knappliancedef/providers/Microsoft.Solutions/applianceDefinitions/ManagedWebApplication')]",
+                "mode":"Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('artifacts').logAnalytics]"
+                },
                 "parameters": {
-                    "userName": {
-                        "value": "[parameters('userName')]"
+                    "omsWorkspaceName": {
+                        "value": "[variables('logAnalyticsWorkspaceName')]"
                     },
-                    "vmNamePrefix": {
-                        "value": "[parameters('vmNamePrefix')]"
+                    "omsWorkspaceRegion": {
+                        "value": "[variables('logAnalyticsLocation')]"
                     },
                     "enablePremiumManagement": {
                         "value": "[parameters('enablePremiumManagement')]"
-                    },
-                    "publicIPAddressName": {
-                        "value": "[parameters('publicIPAddressName')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-09-01",
+            "name": "compute",
+            "dependsOn": [
+                "logAnalytics"
+            ],
+            "properties": {
+                "mode":"Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('artifacts').compute]"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
                     },
                     "vmSize": {
                         "value": "[parameters('vmSize')]"
                     },
-                    "location": {
-                        "value": "[parameters('location')]"
+                    "vmNamePrefix": {
+                        "value": "[parameters('vmNamePrefix')]"
+                    },
+                    "userName": {
+                        "value": "[parameters('userName')]"
                     },
                     "pwd": {
                         "value": "[parameters('pwd')]"
+                    },
+                    "dscScript": {
+                        "value": "[variables('artifacts').scripts]"
+                    },
+                    "logAnalyticsWorkspaceName": {
+                        "value": "[variables('logAnalyticsWorkspaceName')]"
+                    },
+                    "publicIPAddressName": {
+                        "value": "[parameters('publicIPAddressName')]"
                     },
                     "dnsName": {
                         "value": "[parameters('dnsName')]"
@@ -99,5 +164,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "applicationEndpoint": {
+            "type": "string",
+            "value": "[reference('compute').outputs.vmEndpoint.value]"
+        }
+    }
 }
