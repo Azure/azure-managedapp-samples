@@ -5,6 +5,18 @@
 
 ## Deploy this sample to your Service Catalog
 
-Clicking on the button below, will create the Managed Application definition to a Resource Group in your Azure subscription.
+This sample needs to be downloaded and modified, before initialized to your Service Catalog.
+As this sample is using an existing KeyVault and secret, you must update the *id* and *secretName*:
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-managedapp-samples%2Fmaster%2Fsamples%2F201-managed-web-app-using-keyvault%2Fazuredeploy.json)
+````json
+                    "administratorLoginPassword": {
+                        "reference": {
+                            "keyVault": {
+                                "id": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{keyVaultName}"
+                            },
+                            "secretName": "appsecret"
+                        }
+                    },
+````
+
+Once completed, you can put the templates into a .zip, upload to your storage account, and initialize the Managed Application offering.
