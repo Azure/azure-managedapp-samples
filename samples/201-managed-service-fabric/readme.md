@@ -3,42 +3,10 @@
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
 [**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
 
-## How to try out this Azure Managed Application
+## Deploy this sample to your Service Catalog
 
-### Step 1
+Clicking on the button below, will create the Managed Application definition to a Resource Group in your Azure subscription.
 
-You will need the object Id of your Azure Ad group, and the principal Id of the Azure role, which will be used to define the level of authorization towards the underlying Azure resources.
-
-Here's an example from my environment, where I have the object id from a newly created AAD group, and the *Owner* principal Id in Azure:
-
-	Object Id of the Azure Ad group: '2d7641f0-dbb7-4097-bb19-c098c8756086'
-	Principal Id of the Owner: '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
-
-### Step 2
-
-Create a new resource group where you will create the appliance definition a bit later
-
-### Step 3
-
-If you haven't downloaded the files yet, now is a good time :-)
-Open *mainTemplate.json* in your favorite JSON editor, and modify the following line to reflect your environment:
-
-	"applianceDefinitionId": "/subscriptions/{yourSubscriptionId}/resourceGroups/{yourResourceGroupname}/providers/Microsoft.Solutions/applianceDefinitions/serviceFabricDef",
-
-Save the changes
-
-### Step 4
-
-Put all the three files into a zip-folder, and upload it to a storage account in Azure
-
-### Step 5
-
-Create the managed application definition (in westcentralus) using Azure CLI (*PowerShell support will come shortly*). Below you can see an example:
-
-	az managedapp definition create -n serviceFabricDef -l "westcentralus" --resource-group ApplianceDef --lock-level ReadOnly --display-name "Managed Service Fabric Cluster" --description "Service Fabric Cluster with Azure management services"  --authorizations "688378e8-50b1-4970-ac7e-596bf061475c:8e3af657-a8ff-443c-a75c-2fe8c4bcb635" --package-file-uri "https://catappliance.blob.core.windows.net/def/serviceFabricDef.zip" --debug
-
-### Step 6
-
-You can now deploy this Managed Application (in westcentralus) from the Service Catalog in Azure
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-managedapp-samples%2Fmaster%2Fsamples%2F201-managed-service-fabric%2Fazuredeploy.json)
 
 ![alt text](images/appliance.png "Azure Managed Application")
