@@ -51,7 +51,7 @@ Example:
 
 >**Note**:Use *applianceCreateUiDefinition.json* for this purpose
 
-* When nested templates or scripts are being used, the *applianceMainTemplate.json* **must** include a variable with the uri() function with deployment().properties.templateLink.uri - to automatically resolve the URL for nested templates and scripts. The variable(s) would look similar to this:
+* When nested templates or scripts are being used, the *mainTemplate.json* **must** include a variable with the uri() function with deployment().properties.templateLink.uri - to automatically resolve the URL for nested templates and scripts. The variable(s) would look similar to this:
 
 ````json
 		"variables": {
@@ -64,7 +64,7 @@ Example:
 	* Storage Account Name prefix
 	* Domain Name Label
 
->**Note**: Use *applianceCreateUiDefinition.json* for this purpose, to avoid conflict
+>**Note**: Use *createUiDefinition.json* for this purpose, to avoid conflict
 
 * Do not create a parameter for a **storage account name**, but specify it is for **storage account name prefix**. Storage account names need to be lower case and can't contain hyphens (-) in addition to other domain name restrictions. A storage account has a limit of 24 characters. They also need to be globally unique. To prevent any validation issue configure a variables (using the expression **uniqueString** and a static value **storage**). Storage accounts with a common prefix (uniqueString) will not get clustered on the same racks.
 
@@ -84,8 +84,7 @@ Example:
     },
 ````
 
->**Note**: Templates should consider storage accounts throughput constraints and deploy across multiple storage accounts where necessary. Templates should distribute virtual machine disks across multiple storage accounts to avoid platform throttling.
- 
+
 * Passwords **must** be passed into parameters of type **securestring**. Do not specify a defaultValue for a parameter that is used for a password or an SSH key. Passwords must also be passed to **customScriptExtension** using the **commandToExecute** property in protectedSettings.
 
 ````json
@@ -107,7 +106,7 @@ Example:
 
 >**Note**: In order to ensure that secrets which are passed as parameters to virtualMachines/extensions are encrypted, the protectedSettings property of the relevant extensions must be used.
  
-* Using tags to add metadata to resources allows you to add additional information about your resources. A good use case for tags is adding metadata to a resource for billing detail purposes. 
+* Using tags to add metadata to resources allows you to add additional information about your resources. A good use case for tags is adding metadata to a resource for billing detail purposes.
 
 * You can group variables into complex objects. You can reference a value from a complex object in the format variable.subentry (e.g. `"[variables('storage').storageAccounts.type]"`). Grouping variables helps you keep track of related variables and improves readability of the template.
 
@@ -148,7 +147,7 @@ Example:
         "logAnalyticsLocation": "[variables('logAnalyticsLocationMap')[parameters('location')]]"
 ````
 
->**NOTE**: To find the available Azure regions for a Resource Provider, you can use the following PowerShell cmdlet: 
+>**NOTE**: To find the available Azure regions for a Resource Provider, you can use the following PowerShell cmdlet:
 >```Get-AzureRmResourceProvider -ProviderNamespace Microsoft.OperationalInsights | select -ExpandProperty Locations```
 
 The domainNameLabel property for publicIPAddresses **must** be **unique**. domainNameLabel is required to be between 3 and 63 characters long and to follow the rules specified by this regular expression ^[a-z][a-z0-9-]{1,61}[a-z0-9]$. As the uniqueString function will generate a string that is 13 characters long in the example below it is presumed that the dnsPrefixString prefix string has been checked to be no more than 50 characters long and to conform to those rules.
@@ -181,7 +180,7 @@ The domainNameLabel property for publicIPAddresses **must** be **unique**. domai
 	    }
 ````
 
-* If using *nested templates*, ensure you are referencing the outputs from the nested templates into the *applianceMainTemplate.json*
+* If using *nested templates*, ensure you are referencing the outputs from the nested templates into the *mainTemplate.json*
 
 ````json
 	    "outputs": {
@@ -190,10 +189,4 @@ The domainNameLabel property for publicIPAddresses **must** be **unique**. domai
 	            "value": "[reference('nestedDeployment').outputs.vmEndpoint.value]"
 	        }
 	    }
-````
-
-* To capture the outputs into the *mainTemplate.json*, which will be the template the customer interacts with, you **must** have the output section present in the template
-
-````json
-    	"outputs": {}
 ````
