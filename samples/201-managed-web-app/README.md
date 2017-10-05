@@ -17,7 +17,7 @@ Modify the snippet below to deploy Managed Application definition to a Resource 
 
 ````powershell
 $rgname = "<yourRgName>"
-$location = "rgLocation"
+$location = "<rgLocation>"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
 $uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-web-app/managedwebapp.zip"
 

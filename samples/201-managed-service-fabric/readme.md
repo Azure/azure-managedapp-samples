@@ -5,15 +5,19 @@
 
 ## Deploy this sample to your Service Catalog
 
+### Deploy using Azure portal
+
 Clicking on the button below, will create the Managed Application definition to a Resource Group in your Azure subscription.
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-managedapp-samples%2Fmaster%2Fsamples%2F201-managed-service-fabric%2Fazuredeploy.json)
 
 ### Deploy using PowerShell
 
+Modify the snippet below to deploy Managed Application definition to a Resource Group in your Azure subscription
+
 ````powershell
 $rgname = "<yourRgName>"
-$location = "rgLocation"
+$location = "<rgLocation>"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
 $uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-service-fabric/managedservicefabric.zip"
 
