@@ -13,13 +13,13 @@ Clicking on the button below, will create the Managed Application definition to 
 
 ### Deploy using PowerShell
 
-The sample snippet below shows how to creat the Managed Application definition to a Resource Group in your Azure subscription
+Modify the snippet below to deploy Managed Application definition to a Resource Group in your Azure subscription
 
 ````powershell
 $rgname = "<yourRgName>"
 $location = "rgLocation"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
-$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-web-app-using-keyvault/managedwebapp.zip"
+$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-web-app/managedwebapp.zip"
 
 New-AzureRmManagedApplicationDefinition -Name "ManagedWebApp" `
                                         -ResourceGroupName $rgname `
@@ -30,4 +30,20 @@ New-AzureRmManagedApplicationDefinition -Name "ManagedWebApp" `
                                         -PackageFileUri $uri `
                                         -Authorization $authorization `
                                         -Verbose
+````
+
+### Deploy using AzureCLI
+
+Modify the snippet below to deploy Managed Application definition to a Resource Group in your Azure subscription
+
+````azureCLI
+az managedapp definition create \
+  --name "ManagedWebApp" \
+  --location <rgLocation> \
+  --resource-group <yourRgName> \
+  --lock-level ReadOnly \
+  --display-name "Managed Web Application" \
+  --description "Web App with Azure mgmt" \
+  --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
+  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-web-app-using-keyvault/managedwebapp.zip"
 ````
