@@ -49,7 +49,7 @@ Example:
 	* Location
 
 
->**Note**:Use *applianceCreateUiDefinition.json* for this purpose
+>**Note**:Use *createUiDefinition.json* for this purpose
 
 * When nested templates or scripts are being used, the *mainTemplate.json* **must** include a variable with the uri() function with deployment().properties.templateLink.uri - to automatically resolve the URL for nested templates and scripts. The variable(s) would look similar to this:
 
@@ -152,7 +152,7 @@ Example:
 
 The domainNameLabel property for publicIPAddresses **must** be **unique**. domainNameLabel is required to be between 3 and 63 characters long and to follow the rules specified by this regular expression ^[a-z][a-z0-9-]{1,61}[a-z0-9]$. As the uniqueString function will generate a string that is 13 characters long in the example below it is presumed that the dnsPrefixString prefix string has been checked to be no more than 50 characters long and to conform to those rules.
 
->**Note**: The recommended approach for creating a publicIPAddresses is to use the Microsoft.Network.PublicIpAddressCombo in applianceCreateUIDefinition.json which will validate the input and make sure the domainNameLabel is available, however if a Managed Application creates new publicIPAddresses in a template without using this element to provide parameters then it should ensure that the domainNameLabel properties used for them are unique
+>**Note**: The recommended approach for creating a publicIPAddresses is to use the Microsoft.Network.PublicIpAddressCombo in createUIDefinition.json which will validate the input and make sure the domainNameLabel is available, however if a Managed Application creates new publicIPAddresses in a template without using this element to provide parameters then it should ensure that the domainNameLabel properties used for them are unique
 
 ````json	
 		 "parameters": {
@@ -189,4 +189,17 @@ The domainNameLabel property for publicIPAddresses **must** be **unique**. domai
 	            "value": "[reference('nestedDeployment').outputs.vmEndpoint.value]"
 	        }
 	    }
+````
+
+* To set the managed application resource name, you must use ````"applicationResourceName"```` in the ````createUiDefinition.json```` file. If not, the application will automatically get a GUID for this resource.
+Example usage:
+
+````json
+        "outputs": {
+            "vmName": "[steps('appSettings').vmName]",
+            "trialOrProduction": "[steps('appSettings').trialOrProd]",
+            "userName": "[steps('vmCredentials').adminUsername]",
+            "pwd": "[steps('vmCredentials').vmPwd.password]",
+            "applicationResourceName": "[steps('appSettings').vmName]"
+        }
 ````
