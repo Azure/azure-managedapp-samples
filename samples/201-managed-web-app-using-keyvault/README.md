@@ -1,7 +1,7 @@
 # Managed Web Application (IaaS) with Azure management services and Key Vault
 
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
-[**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
+[**Marketplace Managed Application**](https://docs.microsoft.com/en-us/azure/managed-applications/publish-marketplace-app)
 
 ## Deploy this sample to your Service Catalog
 
@@ -20,3 +20,7 @@ As this sample is using an existing KeyVault and secret, you must update the *id
 ````
 
 Once completed, you can put the templates into a .zip, upload to your storage account, and initialize the Managed Application offering.
+
+## Post-requirements
+
+Grant the Appliance Resource Provider access to your KeyVault resource, referenced in the template
