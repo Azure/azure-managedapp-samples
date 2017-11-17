@@ -1,7 +1,7 @@
 # Managed Service Fabric with Azure management services
 
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
-[**Marketplace Managed Application**](/1-contribution-guide/marketplace.md#transitioning-to-marketplace)
+[**Marketplace Managed Application**](https://docs.microsoft.com/en-us/azure/managed-applications/publish-marketplace-app)
 
 ## Deploy this sample to your Service Catalog
 
