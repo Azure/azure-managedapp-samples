@@ -1,0 +1,249 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual machine name"
+            }
+        },
+        "trialOrProduction": {
+            "type": "string",
+            "allowedValues": [
+                "Trial",
+                "Production"
+            ],
+            "metadata": {
+                "description": "Select whether the VM should be in production or not."
+            }
+        },
+        "userName": {
+            "type": "string",
+            "defaultValue": "azureadmin",
+            "metadata": {
+                "description": "Username for the guest OS"
+            }
+        },
+        "pwd": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Application password"
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "vnet1",
+            "metadata": {
+                "description": "Virtual network name"
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "subnet1",
+            "metadata": {
+                "description": "Subnet name"
+            }
+        },
+        "vNetRgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual network resource group name"
+            }
+        },
+        "vNetAddressPrefix": {
+            "type": "string",
+            "defaultValue": "192.168.0.0/16",
+            "metadata": {
+                "description": "Virtual network address prefix"
+            }
+        },
+        "subnetAddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet address prefix"
+            }
+        }
+    },
+    "variables": {
+        "diskSizes": [20, 30],
+        "productionvNetName": "[resourceId(parameters('vNetRgName'), 'Microsoft.Networks/virtualNetworks/', parameters('virtualNetworkName'))]",
+        "productionSubnetId": "[concat(variables('productionvNetName'), '/subnets/', parameters('subnetName'))]",
+        "vNetName": "trialvNet",
+        "sNetName": "trialSubnet",
+        "vnetID": "[resourceId('Microsoft.Network/virtualnetworks', variables('vNetName'))]",
+        "subnetRef": "[concat(variables('vNetId'),'/subnets/', variables('sNetName'))]",
+        "windowsOffer": "WindowsServer",
+        "windowsSku": "2016-Datacenter",
+        "windowsPublisher": "MicrosoftWindowsServer",
+        "availabilitySetName": "[concat(parameters('vmName'), '-', 'avset')]",
+        "availabilitySetId": {
+            "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+        },
+        "vNicName": "[concat(parameters('vmName'), '-', 'nic')]",
+        "pNicName": "[concat(parameters('vmName'), '-', 'pip')]",
+        "copy": [
+            {
+                "name": "managedDiskId",
+                "count": "[length(variables('diskSizes'))]",
+                "input": {
+                    "lun": "[copyIndex('managedDiskId')]",
+                    "createOption": "Empty",
+                    "diskSizeGB": "[variables('diskSizes')[copyIndex('managedDiskId')]]"
+                }
+            }
+        ]
+    },
+    "resources": [
+        {
+            "condition": "[equals(parameters('trialOrProduction'), 'Trial')]",
+            "apiVersion": "2017-04-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('vNetName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vNetAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('sNetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetAddressPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2017-04-01",
+            "name": "[variables('pNicName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPallocationmethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[toLower(parameters('vmName'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2017-04-01",
+            "name": "[variables('vNicName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', variables('pNicName'))]",
+                "[resourceId('Microsoft.network/virtualNetworks/', variables('vNetName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pNicName'))]"
+                            },
+                            "subnet": {
+                                "id": "[if(equals(parameters('trialOrProduction'), 'Production'), variables('productionSubnetId'), variables('subnetRef'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "condition": "[equals(parameters('trialOrProduction'), 'Production')]",
+            "type": "Microsoft.Compute/availabilitySets",
+            "apiVersion": "2017-03-30",
+            "name": "[variables('availabilitySetName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "platformFaultDomainCount": 2,
+                "platformUpdateDomainCount": 3
+            },
+            "sku": {
+                "name": "Aligned"
+            }
+        },
+        {
+            "condition": "[equals(parameters('trialOrProduction'), 'Production')]",
+            "type": "Microsoft.Compute/disks",
+            "apiVersion": "2017-03-30",
+            "name": "[concat(parameters('vmName'), '-mdisk')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Premium_LRS"
+            },
+            "properties": {
+                "creationData": {
+                    "createOption": "Empty"
+                },
+                "diskSizeGB": 200
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2017-03-30",
+            "name": "[parameters('vmName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkinterfaces/', variables('vNicName'))]",
+                "[resourceId('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]",
+                "[resourceId('Microsoft.Compute/disks', concat(parameters('vmName'), '-mDisk'))]"
+            ],
+            "properties": {
+                "availabilitySet": "[if(equals(parameters('trialOrProduction'), 'Production'), variables('availabilitySetId'), json('null'))]",
+                "hardwareprofile": {
+                    "vmsize": "[if(equals(parameters('trialOrProduction'), 'Production'), 'Standard_DS3_v2', 'Standard_DS1_v2')]"
+                },
+                "osProfile": {
+                    "computername": "[parameters('vmName')]",
+                    "adminusername": "[parameters('username')]",
+                    "adminpassword": "[parameters('pwd')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('windowsPublisher')]",
+                        "offer": "[variables('windowsOffer')]",
+                        "version": "latest",
+                        "sku": "[variables('windowsSku')]"
+                    },
+                    "osdisk": {
+                        "name": "[concat(parameters('vmName'), '-osDisk')]",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[if(equals(parameters('trialOrProduction'), 'Production'), 'Premium_LRS', 'Standard_LRS')]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": "[if(equals(parameters('trialOrProduction'), 'Production'), variables('managedDiskId'), json('null'))]"
+                },
+                "networkprofile": {
+                    "networkinterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkinterfaces', variables('vNicName'))]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "connectionInfo": {
+            "type": "string",
+            "value": "Use RDP to connect to the VM endpoint"
+        },
+        "vmEndpoint": {
+            "type": "string",
+            "value": "[reference(concat(variables('pNicName'))).dnsSettings.fqdn]"
+        },        
+        "environment":{
+            "type": "string",
+            "value": "[if(equals(parameters('trialOrProduction'), 'Trial'), 'This is a trial', 'Production')]"
+        }
+    }
+}
