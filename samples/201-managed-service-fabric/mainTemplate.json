@@ -512,7 +512,7 @@
             },
             "sku": {
                 "name": "[variables('vmNodeType0Size')]",
-                "capacity": "5",
+                "capacity": 5,
                 "tier": "Standard"
             },
             "tags": {

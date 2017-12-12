@@ -191,7 +191,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
-            "name": "[concat(parameters('vmNamePrefix'), '-appliance')]",
+            "name": "[concat(parameters('vmNamePrefix'), '-app')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Storage/StorageAccounts/', variables('storageAccountName'))]",
@@ -202,7 +202,7 @@
                     "vmsize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computername": "[concat(parameters('vmNamePrefix'), '-appliance')]",
+                    "computername": "[concat(parameters('vmNamePrefix'), '-app')]",
                     "adminusername": "[parameters('username')]",
                     "adminpassword": "[parameters('pwd')]"
                 },
@@ -235,9 +235,9 @@
                     "type": "extensions",
                     "apiVersion": "2017-03-30",
                     "name": "PowerShellDSC",
-                    "location": "[parameters('location')]",
+                    "location": "[parameters('location')]",                
                     "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-appliance'))]"
+                        "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-app'))]"
                     ],
                     "properties": {
                         "autoUpgradeMinorVersion": true,
@@ -256,7 +256,7 @@
                     "name": "OMS",
                     "location": "[parameters('location')]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-appliance'))]"
+                        "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-app'))]"
                     ],                    
                     "properties": {
                         "autoUpgradeMinorVersion": true,
@@ -265,7 +265,7 @@
                         "type": "MicrosoftMonitoringAgent",
                         "settings": {
                             "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('logAnalyticsWorkspaceName')), '2015-11-01-preview').customerId]",
-                            "azureResourceId": "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-appliance'))]"
+                            "azureResourceId": "[resourceId('Microsoft.Compute/virtualMachines/', concat(parameters('vmNamePrefix'), '-app'))]"
                         },
                         "protectedSettings": {
                             "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('logAnalyticsWorkspaceName')), '2015-11-01-preview').primarySharedKey]"
