@@ -88,20 +88,6 @@
                     }
                 },
                 {
-                    "apiVersion": "2015-11-01-preview",
-                    "name": "[concat(parameters('omsWorkspaceName'), '/', 'HyperV3')]",
-                    "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
-                    "dependsOn": [
-                        "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsWorkspaceName'))]"
-                    ],
-                    "properties": {
-                        "ETag": "*",
-                        "category": "HyperV",
-                        "displayName": "Replication throughput per VM",
-                        "query": "Type:Perf ObjectName=\"Hyper-V Azure Replication Agent\" CounterName=\"Replication Throughput\" TimeGenerated>NOW-8HOURS | measure  avg(CounterValue) by InstanceName  interval 15minutes"
-                    }
-                },
-                {
                     "name": "[concat(parameters('omsWorkspaceName'), '/', 'SoftwareUpdateFailed2')]",
                     "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
                     "apiVersion": "2015-11-01-preview",
