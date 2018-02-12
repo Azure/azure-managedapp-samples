@@ -11,7 +11,7 @@
         },
         "computeLocation": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "[resourceGroup().location]",
             "metadata": {
                 "description": "Select the location for your SF resources"
             }
@@ -67,7 +67,7 @@
     },
     "variables": {
         "addressPrefix": "10.0.0.0/16",
-        "omsWorkspaceName": "[concat(resourceGroup().name, '-', 'managed-oms')]",
+        "omsWorkspaceName": "[concat(take(resourceGroup().name, 5), '-', 'oms')]",
         "subnet0Prefix": "10.0.0.0/24",
         "publicIPAddressName": "[toLower(concat('pip', parameters('sfpublicIPAddressName')))]",
         "lbName": "[concat('lbn', uniqueString(resourceGroup().Id))]",
@@ -75,7 +75,7 @@
         "lbIPName": "[concat('lb', uniqueString(resourceGroup().Id))]",
         "storageAccountType": "Standard_LRS",
         "vmImageVersion": "latest",
-        "vmImageSku": "2012-R2-Datacenter",
+        "vmImageSku": "2016-Datacenter",
         "vmImageOffer": "WindowsServer",
         "vmNodeType0Size": "Standard_D1_v2",
         "vmImagePublisher": "MicrosoftWindowsServer",
@@ -153,33 +153,27 @@
     },
     "resources": [
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('supportLogStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
-            "properties": {
-                "accountType": "[variables('supportLogStorageAccountType')]"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+            "kind": "Storage",
+            "sku": {
+                "name": "[variables('storageAccountType')]"
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('applicationDiagnosticsStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
-            "properties": {
-                "accountType": "[variables('applicationDiagnosticsStorageAccountType')]"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+            "kind": "Storage",
+            "sku": {
+                "name": "[variables('applicationDiagnosticsStorageAccountType')]"
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[variables('virtualNetworkName')]",
             "location": "[parameters('computeLocation')]",
@@ -204,7 +198,7 @@
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[concat(variables('lbIPName'),'-','0')]",
             "location": "[parameters('computeLocation')]",
@@ -220,7 +214,7 @@
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/loadBalancers",
             "name": "[concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name'))]",
             "location": "[parameters('computeLocation')]",
@@ -318,10 +312,6 @@
                         }
                     }
                 ]
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
             }
         },
         {
@@ -335,14 +325,10 @@
             "copy": {
                 "name": "storageLoop",
                 "count": 5
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
             }
         },
         {
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "name": "[parameters('vmNodeType0Name')]",
             "location": "[parameters('computeLocation')]",
@@ -379,7 +365,8 @@
                                         "clusterEndpoint": "[reference(parameters('clusterName')).clusterEndpoint]",
                                         "nodeTypeRef": "[parameters('vmNodeType0Name')]",
                                         "dataPath": "D:\\\\SvcFab",
-                                        "durabilityLevel": "Bronze"
+                                        "durabilityLevel": "Bronze",
+                                        "enableParallelJobs": true
                                     },
                                     "typeHandlerVersion": "1.0"
                                 }
@@ -496,14 +483,9 @@
                             "version": "[variables('vmImageVersion')]"
                         },
                         "osDisk": {
-                            "vhdContainers": [
-                                "[concat('https://', variables('uniqueStringArray0')[0], '.blob.core.windows.net/', variables('vmStorageAccountContainerName'))]",
-                                "[concat('https://', variables('uniqueStringArray0')[1], '.blob.core.windows.net/', variables('vmStorageAccountContainerName'))]",
-                                "[concat('https://', variables('uniqueStringArray0')[2], '.blob.core.windows.net/', variables('vmStorageAccountContainerName'))]",
-                                "[concat('https://', variables('uniqueStringArray0')[3], '.blob.core.windows.net/', variables('vmStorageAccountContainerName'))]",
-                                "[concat('https://', variables('uniqueStringArray0')[4], '.blob.core.windows.net/', variables('vmStorageAccountContainerName'))]"
-                            ],
-                            "name": "vmssosdisk",
+                            "managedDisk": {
+                                "storageAccountType": "[variables('storageAccountType')]"
+                            },
                             "caching": "ReadOnly",
                             "createOption": "FromImage"
                         }
@@ -514,10 +496,6 @@
                 "name": "[variables('vmNodeType0Size')]",
                 "capacity": 5,
                 "tier": "Standard"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
             }
         },
         {
@@ -562,10 +540,6 @@
                 "provisioningState": "Default",
                 "reliabilityLevel": "Silver",
                 "vmImage": "Windows"
-            },
-            "tags": {
-                "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
             }
         },
         {
@@ -926,6 +900,14 @@
     "outputs": {
         "clusterMgmtEndpoint": {
             "value": "[concat(parameters('dnsName'), '.', parameters('computeLocation'), '.cloudapp.azure.com:19080/explorer')]",
+            "type": "string"
+        },
+        "reliabilityLevel": {
+            "value": "[reference(parameters('clusterName')).reliabilityLevel]",
+            "type": "string"
+        },
+        "platform": {
+            "value": "[reference(parameters('clusterName')).vmImage]",
             "type": "string"
         }
     }
