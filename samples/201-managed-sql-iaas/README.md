@@ -1,4 +1,4 @@
-# Managed SQL IaaS with automated patching and backup
+# Managed SQL 2017 IaaS with automated patching and backup
 
 >Note: This sample is for Managed Application in Service Catalog. For Marketplace, please see these instructions:
 [**Marketplace Managed Application**](https://docs.microsoft.com/en-us/azure/managed-applications/publish-marketplace-app)
