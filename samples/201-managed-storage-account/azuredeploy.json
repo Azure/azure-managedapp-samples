@@ -6,13 +6,13 @@
             "type": "string",
             "defaultValue": "ManagedStorageAccount",
             "metadata": {
-                "description": "Provide a name for the managed application"
+                "description": "Provide a name for the managed application."
             }
         },
         "location": {
             "type": "string",
             "metadata": {
-                "description": "Specify the Azure region to place the application definition"
+                "description": "Specify the Azure region to place the application definition."
             }
         },
         "lockLevel": {
