@@ -19,7 +19,7 @@
             "type": "string",
             "allowedValues": [
                 "ReadOnly",
-                "CanNotDelete"
+                "none"
             ],
             "defaultValue": "ReadOnly",
             "metadata": {
