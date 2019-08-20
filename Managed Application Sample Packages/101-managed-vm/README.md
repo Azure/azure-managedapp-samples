@@ -19,7 +19,7 @@ Modify the snippet below to deploy Managed Application definition to a Resource 
 $rgname = "<yourRgName>"
 $location = "<rgLocation>"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
-$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/101-managed-vm/managedvm.zip"
+$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/101-managed-vm/managedvm.zip"
 
 New-AzureRmManagedApplicationDefinition -Name "ManagedVM" `
                                         -ResourceGroupName $rgname `
