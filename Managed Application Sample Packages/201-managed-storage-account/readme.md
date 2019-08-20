@@ -17,7 +17,7 @@ Clicking on the button below, will create the Managed Application definition to 
 $rgname = "<yourRgName>"
 $location = "<rgLocation>"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
-$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-storage-account/managedstorage.zip"
+$uri = "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/201-managed-storage-account/managedstorage.zip"
 
 New-AzureRmManagedApplicationDefinition -Name "ManagedStorage" `
                                         -ResourceGroupName $rgname `
