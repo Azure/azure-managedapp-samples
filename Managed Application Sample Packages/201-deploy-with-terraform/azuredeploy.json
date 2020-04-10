@@ -48,7 +48,7 @@
         }
     },
     "variables": {
-        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'managedvm.zip')]"
+        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'minimal-template.zip')]"
     },
     "resources": [
         {

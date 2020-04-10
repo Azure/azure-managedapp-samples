@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "username": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        { 
+            "apiVersion": "2018-02-01",
+            "name": "pid-<Tracking GUID registered at https://partner.microsoft.com/dashboard/account/management>", 
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        }
+    ],
+    "outputs": {
+
+    }
+}

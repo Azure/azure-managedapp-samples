@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "__APPNAME__"
+        },
+        "location": {
+            "value": "__LOCATION__"
+        },
+        "managementPolicy": {
+            "value": {
+                "mode": "Managed"
+            }
+        },
+        "lockLevel": {
+            "value": "readonly"
+        },
+        "description": {
+            "value": "__DESCRIPTION__"
+        },
+        "displayName": {
+            "value": "__DISPLAY_NAME__"
+        },
+        "packageFileUri": {
+            "value": "__PACKAGE_FILE_URI__"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "__PRINCIPAL_ID__",
+                    "roleDefinitionId": "__ROLE_DEFINITION_ID__"
+                }
+            ]
+        },
+        "lockingPolicy": {
+            "value": {
+                "allowedActions": []
+            }
+        },
+        "notificationPolicy": {
+            "value": {
+                "notificationEndpoints": [
+                    {
+                        "uri": "__NOTIFICATION_ENDPOINT__"
+                    }
+                ]
+            }
+        },
+        "deploymentPolicy": {
+            "value": {
+                "deploymentMode": "Incremental"
+            }
+        }
+    }
+}
