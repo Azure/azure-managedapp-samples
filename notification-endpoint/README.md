@@ -1,0 +1,5 @@
+# Notification Endpoint Samples
+
+If you have seen [notification endpoints](https://docs.microsoft.com/azure/azure-resource-manager/managed-applications/publish-notifications) and would like to use these, this sample shows how to process those messages in [C#](./csharp), [Python](./python), and [TypeScript](./typescript). 
+
+All three samples are implemented as [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview). As you read through the samples, it may not be obvious what value they provide. The hard part in getting all of this to work is getting the URL exactly correct. When setting the endpoint, the actual call to the notification endpoint always appends the "/resource" to the endpoint path. So, if the endpoint is `https://mynotification.azurewebsites.net/api`, the call will go to `https://mynotification.azurewebsites.net/api/resource` when the notification endpoint is called. Everything else is simple to deal with.

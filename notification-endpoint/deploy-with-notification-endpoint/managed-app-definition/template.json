@@ -1,0 +1,58 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "managementPolicy": {
+            "type": "object"
+        },
+        "lockLevel": {
+            "type": "string"
+        },
+        "authorizations": {
+            "type": "array"
+        },
+        "description": {
+            "type": "string"
+        },
+        "displayName": {
+            "type": "string"
+        },
+        "packageFileUri": {
+            "type": "string"
+        },
+        "lockingPolicy": {
+            "type": "object"
+        },
+        "notificationPolicy": {
+            "type": "object"
+        },
+        "deploymentPolicy": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('name')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.Solutions/applicationDefinitions",
+            "properties": {
+                "lockLevel": "[parameters('lockLevel')]",
+                "authorizations": "[parameters('authorizations')]",
+                "description": "[parameters('description')]",
+                "displayName": "[parameters('displayName')]",
+                "packageFileUri": "[parameters('packageFileUri')]",
+                "managementPolicy": "[parameters('managementPolicy')]",
+                "lockingPolicy": "[parameters('lockingPolicy')]",
+                "notificationPolicy": "[parameters('notificationPolicy')]",
+                "deploymentPolicy": "[parameters('deploymentPolicy')]"
+            }
+        }
+    ]
+}
