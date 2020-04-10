@@ -45,5 +45,5 @@ az managedapp definition create \
   --display-name "Managed SQL IaaS" \
   --description "Managed SQL IaaS with automated patching and backup" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-sql-iaas/managedSql.zip"
+  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/201-managed-sql-iaas/managedSql.zip"
 ````

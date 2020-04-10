@@ -58,5 +58,5 @@ az managedapp definition create \
   --display-name "Minimal Template" \
   --description "A minimal template" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/samples/101-managed-vm/minimal-template.zip"
+  --package-file-uri "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/Managed Application Sample Packages/101-minimal-template/minimal-template.zip"
 ````
