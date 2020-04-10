@@ -19,7 +19,7 @@ Modify the snippet below to deploy Managed Application definition to a Resource 
 $rgname = "<yourRgName>"
 $location = "<rgLocation>"
 $authorization = "<userOrGroupId>:<RBACRoleDefinitionId>"
-$uri = "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/Managed Application Sample Packages/201-deploy-with-terraform/minimal-template.zip"
+$uri = "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/Managed Application Sample Packages/201-deploy-with-terraform/deploy-with-terraform.zip"
 
 New-AzureRmManagedApplicationDefinition -Name "MinimalTemplate" `
                                         -ResourceGroupName $rgname `
@@ -45,7 +45,7 @@ az managedapp definition create \
   --display-name "Minimal Template" \
   --description "A minimal template" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/samples/101-managed-vm/minimal-template.zip"
+  --package-file-uri "https://raw.githubusercontent.com/scseely/azure-managedapp-samples/master/Managed Application Sample Packages/201-deploy-with-terraform/deploy-with-terraform.zip"
 ````
 
 ### Run the Terraform template

@@ -46,5 +46,5 @@ az managedapp definition create \
   --display-name "Managed VM" \
   --description "Managed virtual machine" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/101-managed-vm/managedvm.zip"
+  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/101-managed-vm/managedvm.zip"
 ````

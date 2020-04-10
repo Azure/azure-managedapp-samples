@@ -55,5 +55,5 @@ az managedapp definition create \
   --display-name "Managed Web Application" \
   --description "Web App with Azure mgmt" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/201-managed-app-using-existing-vnet/managedAppVnet.zip"
+  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/201-managed-app-using-existing-vnet/managedAppVnet.zip"
 ````
