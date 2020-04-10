@@ -4,15 +4,15 @@
     "parameters": {
         "name": {
             "type": "string",
-            "defaultValue": "ManagedStorageAccount",
+            "defaultValue": "ManagedWebApp",
             "metadata": {
-                "description": "Provide a name for the managed application."
+                "description": "Provide a name for the managed application"
             }
         },
         "location": {
             "type": "string",
             "metadata": {
-                "description": "Specify the Azure region to place the application definition."
+                "description": "Specify the Azure region to place the application definition"
             }
         },
         "lockLevel": {
@@ -34,25 +34,25 @@
         },
         "description": {
             "type": "string",
-            "defaultValue": "Managed Azure Storage Account",
+            "defaultValue": "Managed Azure IaaS Web Application",
             "metadata": {
                 "description": "Provide a brief description of the managed application"
             }
         },
         "displayName": {
             "type": "string",
-            "defaultValue": "Managed Storage Account",
+            "defaultValue": "Managed Azure Web Application",
             "metadata": {
                 "description": "Display name for the managed application"
             }
         }
     },
     "variables": {
-        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'managedstorage.zip')]"
+        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'managed-storage-account.zip')]"
     },
     "resources": [
         {
-            "apiVersion": "2017-09-01",
+            "apiVersion": "2019-07-01",
             "name": "[parameters('name')]",
             "location": "[parameters('location')]",
             "type": "Microsoft.Solutions/applicationDefinitions",

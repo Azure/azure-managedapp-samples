@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
@@ -48,7 +48,6 @@
         "sqlStorageWorkloadType": "GENERAL",
         "sqlStorageDisksConfigurationType": "NEW",
         "sqlStorageStartingDeviceId": 2,
-        "sqlStorageDeploymentToken": 98818,
         "sqlAutoPatchingDayOfWeek": "Sunday",
         "sqlAutopatchingStartHour": 2,
         "sqlAutopatchingWindowDuration": 60,
@@ -65,7 +64,7 @@
         {
             "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
@@ -117,7 +116,7 @@
             }
         },
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(parameters('virtualMachineName'), '/SqlIaasExtension')]",
             "location": "[parameters('location')]",
@@ -180,16 +179,20 @@
         {
             "name": "[variables('sqlAutobackupStorageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2019-06-01",
             "location": "[parameters('location')]",
             "properties": {
                 "accountType": "[variables('sqlAutobackupStorageAccountType')]"
-            }
+            },
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage"
         },
         {
             "name": "[parameters('virtualNetworkName')]",
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2017-08-01",
+            "apiVersion": "2019-11-01",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
@@ -210,7 +213,7 @@
         {
             "name": "[variables('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2016-09-01",
+            "apiVersion": "2019-11-01",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
@@ -241,7 +244,7 @@
         {
             "name": "[parameters('publicIpAddressName')]",
             "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2017-08-01",
+            "apiVersion": "2019-11-01",
             "location": "[parameters('location')]",
             "properties": {
                 "publicIpAllocationMethod": "[variables('publicIpAddressType')]",
@@ -256,7 +259,7 @@
         {
             "name": "[variables('networkSecurityGroupName')]",
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-11-01",
             "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [

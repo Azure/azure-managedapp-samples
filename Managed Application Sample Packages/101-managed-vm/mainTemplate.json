@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vmNamePrefix": {
@@ -59,7 +59,7 @@
     "resources": [
         {
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2017-03-01",
+            "apiVersion": "2019-11-01",
             "name": "vmVnet",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -86,7 +86,7 @@
         },
         {
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2017-03-01",
+            "apiVersion": "2019-11-01",
             "name": "NSG",
             "location": "[parameters('location')]",
             "properties": {
@@ -124,7 +124,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2019-11-01",
             "name": "[concat(parameters('publicIPAddressName'), 'IP')]",
             "location": "[parameters('location')]",
             "properties": {
@@ -136,7 +136,7 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2019-11-01",
             "name": "[concat(parameters('vmNamePrefix'), 'nic')]",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -162,7 +162,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "name": "[concat(parameters('vmNamePrefix'), '-app')]",
             "location": "[parameters('location')]",
             "dependsOn": [

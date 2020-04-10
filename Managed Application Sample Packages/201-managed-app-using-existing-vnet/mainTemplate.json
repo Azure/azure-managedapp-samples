@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vmName": {
@@ -97,7 +97,7 @@
     "resources": [
         {
             "condition": "[equals(parameters('trialOrProduction'), 'Trial')]",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2019-11-01",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[variables('vNetName')]",
             "location": "[resourceGroup().location]",
@@ -119,7 +119,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2019-11-01",
             "name": "[variables('pNicName')]",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -131,7 +131,7 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2019-11-01",
             "name": "[variables('vNicName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -158,7 +158,7 @@
         {
             "condition": "[equals(parameters('trialOrProduction'), 'Production')]",
             "type": "Microsoft.Compute/availabilitySets",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "name": "[variables('availabilitySetName')]",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -172,7 +172,7 @@
         {
             "condition": "[equals(parameters('trialOrProduction'), 'Production')]",
             "type": "Microsoft.Compute/disks",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "name": "[concat(parameters('vmName'), '-mdisk')]",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -187,7 +187,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "name": "[parameters('vmName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [

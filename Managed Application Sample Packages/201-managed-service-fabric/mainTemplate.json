@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
@@ -60,17 +60,12 @@
             "metadata": {
                 "description": "Enable premium management of your Service Fabric Cluster"
             }
-        },
-        "sfpublicIPAddressName": {
-            "type": "string"
         }
     },
     "variables": {
         "addressPrefix": "10.0.0.0/16",
         "omsWorkspaceName": "[concat(take(resourceGroup().name, 5), '-', 'oms')]",
         "subnet0Prefix": "10.0.0.0/24",
-        "publicIPAddressName": "[toLower(concat('pip', parameters('sfpublicIPAddressName')))]",
-        "lbName": "[concat('lbn', uniqueString(resourceGroup().Id))]",
         "nicName": "[concat('nic', uniqueString(resourceGroup().Id))]",
         "lbIPName": "[concat('lb', uniqueString(resourceGroup().Id))]",
         "storageAccountType": "Standard_LRS",
@@ -79,7 +74,6 @@
         "vmImageOffer": "WindowsServer",
         "vmNodeType0Size": "Standard_D1_v2",
         "vmImagePublisher": "MicrosoftWindowsServer",
-        "supportLogStorageAccountType": "Standard_LRS",
         "nt0applicationStartPort": 20000,
         "nt0applicationEndPort": 30000,
         "nt0ephemeralStartPort": 49152,
@@ -153,7 +147,7 @@
     },
     "resources": [
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('supportLogStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
@@ -163,7 +157,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('applicationDiagnosticsStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
@@ -173,7 +167,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-11-01",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[variables('virtualNetworkName')]",
             "location": "[parameters('computeLocation')]",
@@ -198,7 +192,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-11-01",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[concat(variables('lbIPName'),'-','0')]",
             "location": "[parameters('computeLocation')]",
@@ -214,7 +208,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2019-11-01",
             "type": "Microsoft.Network/loadBalancers",
             "name": "[concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name'))]",
             "location": "[parameters('computeLocation')]",
@@ -315,7 +309,7 @@
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2019-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('uniqueStringArray0')[copyIndex()]]",
             "location": "[parameters('computeLocation')]",
@@ -325,10 +319,14 @@
             "copy": {
                 "name": "storageLoop",
                 "count": 5
-            }
+            },
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage"
         },
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "2019-12-01",
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "name": "[parameters('vmNodeType0Name')]",
             "location": "[parameters('computeLocation')]",
@@ -499,7 +497,7 @@
             }
         },
         {
-            "apiVersion": "2016-03-01",
+            "apiVersion": "2020-03-01",
             "type": "Microsoft.ServiceFabric/clusters",
             "name": "[parameters('clusterName')]",
             "location": "[parameters('computeLocation')]",
