@@ -81,7 +81,6 @@
         "nt0fabricTcpGatewayPort": 19000,
         "nt0fabricHttpGatewayPort": 19080,
         "subnet0Name": "Subnet-0",
-        "vmStorageAccountContainerName": "vhds",
         "virtualNetworkName": "Vnet1",
         "supportLogStorageAccountName": "[toLower(concat('sf', uniqueString(resourceGroup().id),'2'))]",
         "applicationDiagnosticsStorageAccountType": "Standard_LRS",
