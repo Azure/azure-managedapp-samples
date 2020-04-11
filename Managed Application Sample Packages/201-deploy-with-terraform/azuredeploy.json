@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string",
+            "defaultValue": "ManagedWebApp",
+            "metadata": {
+                "description": "Provide a name for the managed application"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Specify the Azure region to place the application definition"
+            }
+        },
+        "lockLevel": {
+            "type": "string",
+            "allowedValues": [
+                "ReadOnly",
+                "CanNotDelete"
+            ],
+            "defaultValue": "ReadOnly",
+            "metadata": {
+                "description": "Specify the resource lock being used for the managed application"
+            }
+        },
+        "authorizations": {
+            "type": "array",
+            "metadata": {
+                "description": "Provide the authorization mapping for the managed application."
+            }
+        },
+        "description": {
+            "type": "string",
+            "defaultValue": "Managed Azure IaaS Web Application",
+            "metadata": {
+                "description": "Provide a brief description of the managed application"
+            }
+        },
+        "displayName": {
+            "type": "string",
+            "defaultValue": "Managed Azure Web Application",
+            "metadata": {
+                "description": "Display name for the managed application"
+            }
+        }
+    },
+    "variables": {
+        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'deploy-with-terraform.zip')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('name')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.Solutions/applicationDefinitions",
+            "properties": {
+                "lockLevel": "[parameters('lockLevel')]",
+                "authorizations": "[array(parameters('authorizations'))]",
+                "description": "[parameters('description')]",
+                "displayName": "[parameters('displayName')]",
+                "packageFileUri": "[variables('packageFileUri')]"
+            }
+        }
+    ],
+    "outputs": {
+        "managedApplicationName": {
+            "type": "string",
+            "value": "[parameters('name')]"
+        },
+        "lockLevel": {
+            "type": "string",
+            "value": "[parameters('locklevel')]"
+        },
+        "packageFileUri": {
+            "type": "string",
+            "value": "[variables('packageFileUri')]"
+        }
+    }
+}
