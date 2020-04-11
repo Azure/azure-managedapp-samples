@@ -113,7 +113,6 @@
       "adminUsername": "[steps('infrastructureConfig').adminUsername]",
       "adminPassword": "[steps('infrastructureConfig').adminPassword.password]",
       "dnsName": "[steps('sfConfig').sfDnsAndPublicIP.domainNameLabel]",
-      "sfpublicIPAddressName": "[steps('sfConfig').sfDnsAndPublicIP.name]",
       "enablePremiumManagement":"[steps('infrastructureConfig').premiumMgmt]"
     }
   }
