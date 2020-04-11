@@ -64,7 +64,7 @@
     },
     "variables": {
         "addressPrefix": "10.0.0.0/16",
-        "omsWorkspaceName": "[concat(take(resourceGroup().name, 5), '-', 'oms')]",
+        "omsWorkspaceName": "[concat(uniqueString(resourceGroup().Id), '-', 'oms')]",
         "subnet0Prefix": "10.0.0.0/24",
         "nicName": "[concat('nic', uniqueString(resourceGroup().Id))]",
         "lbIPName": "[concat('lb', uniqueString(resourceGroup().Id))]",
