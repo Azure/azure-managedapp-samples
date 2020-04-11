@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
@@ -48,11 +48,11 @@
         }
     },
     "variables": {
-        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'managedwebapp.zip')]"
+        "packageFileUri": "[uri(deployment().properties.templateLink.uri, 'managedvm.zip')]"
     },
     "resources": [
         {
-            "apiVersion": "2017-09-01",
+            "apiVersion": "2019-07-01",
             "name": "[parameters('name')]",
             "location": "[parameters('location')]",
             "type": "Microsoft.Solutions/applicationDefinitions",
