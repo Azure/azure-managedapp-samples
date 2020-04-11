@@ -39,7 +39,7 @@ Modify the snippet below to deploy Managed Application definition to a Resource 
 
 ````azureCLI
 az managedapp definition create \
-  --name "ManagedWebApp" \
+  --name "ManagedVM" \
   --location <rgLocation> \
   --resource-group <yourRgName> \
   --lock-level ReadOnly \
