@@ -34,13 +34,11 @@
                             "confirmPassword": "Confirm password"
                         },
                         "osPlatform": "Windows",
-                        "constraints": {
-                            "customPasswordRegex": "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
-                            "customValidationMessage": "The password must contain at least 8 characters",
-                            "required": true
-                        },
                         "options": {
                             "hideConfirmation": false
+                        },
+                        "constraints": {
+                            "required": true
                         },
                         "toolTip": {
                             "password": "Provide admin password for the virtual machine"
