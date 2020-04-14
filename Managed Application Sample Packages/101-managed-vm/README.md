@@ -9,7 +9,8 @@
 
 Clicking on the button below, will create the Managed Application definition to a Resource Group in your Azure subscription.
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-managedapp-samples%2Fmaster%2Fsamples%2F101-managed-vm%2Fazuredeploy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure%2Fazure-managedapp-samples%2Fmaster%2FManaged%2520Application%2520Sample%2520Packages%2F101-managed-vm%2Fazuredeploy.json)
+
 
 ### Deploy using PowerShell
 
@@ -38,12 +39,12 @@ Modify the snippet below to deploy Managed Application definition to a Resource 
 
 ````azureCLI
 az managedapp definition create \
-  --name "ManagedWebApp" \
+  --name "ManagedVM" \
   --location <rgLocation> \
   --resource-group <yourRgName> \
   --lock-level ReadOnly \
   --display-name "Managed VM" \
   --description "Managed virtual machine" \
   --authorizations "<userOrGroupId>:<RBACRoleDefinitionId>" \
-  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/samples/101-managed-vm/managedvm.zip"
+  --package-file-uri "https://raw.githubusercontent.com/Azure/azure-managedapp-samples/master/Managed Application Sample Packages/101-managed-vm/managedvm.zip"
 ````
