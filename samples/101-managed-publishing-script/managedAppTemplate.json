@@ -1,0 +1,39 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "managedAppName": {
+        "type": "string"
+    },
+    "lockLevel": {
+      "type": "string"
+    },
+    "authorizations": {
+      "type": "array"
+    },
+    "description": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "packageFileUri": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-09-01",
+      "name": "[parameters('managedAppName')]",
+      "location": "[ResourceGroup().location]",
+      "type": "Microsoft.Solutions/applicationDefinitions",
+      "properties": {
+        "lockLevel": "[parameters('lockLevel')]",
+        "authorizations": "[parameters('authorizations')]",
+        "description": "[parameters('description')]",
+        "displayName": "[parameters('displayName')]",
+        "packageFileUri": "[parameters('packageFileUri')]"
+      }
+    }
+  ]
+}
